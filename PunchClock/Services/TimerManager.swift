@@ -8,6 +8,11 @@ final class TimerManager: ObservableObject {
     @Published var state = TimerState()
     @Published var totalElapsedTime: Int = 0
     @Published var isMuted: Bool = false
+    @Published private(set) var notificationsEnabled: Bool = false
+
+    var liveActivitiesSupported: Bool {
+        ActivityAuthorizationInfo().areActivitiesEnabled
+    }
 
     private var timer: Timer?
     private var preset: Preset?
@@ -45,7 +50,19 @@ final class TimerManager: ObservableObject {
     }
 
     private func requestNotificationPermission() {
-        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { _, _ in }
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { [weak self] granted, _ in
+            DispatchQueue.main.async {
+                self?.notificationsEnabled = granted
+            }
+        }
+    }
+
+    func checkNotificationStatus() {
+        UNUserNotificationCenter.current().getNotificationSettings { [weak self] settings in
+            DispatchQueue.main.async {
+                self?.notificationsEnabled = settings.authorizationStatus == .authorized
+            }
+        }
     }
 
     deinit {

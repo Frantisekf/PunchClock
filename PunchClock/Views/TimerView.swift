@@ -70,6 +70,8 @@ struct TimerView: View {
                                 .foregroundColor(.white.opacity(0.8))
                                 .frame(width: 44, height: 44)
                         }
+                        .accessibilityLabel(timerManager.isMuted ? "Unmute" : "Mute")
+                        .accessibilityHint(timerManager.isMuted ? "Turns sounds and haptics on" : "Turns sounds and haptics off")
                         .padding(.trailing, 20)
                         .padding(.top, 10)
                     }
@@ -185,6 +187,8 @@ struct TimerView: View {
                         .background(Color.white.opacity(0.2))
                         .cornerRadius(20)
                     }
+                    .accessibilityLabel("Restart phase")
+                    .accessibilityHint("Restarts the current \(timerManager.state.phase.rawValue) phase from the beginning")
                 }
 
                 if timerManager.state.phase == .prepare ||
@@ -204,6 +208,8 @@ struct TimerView: View {
                         .background(Color.white.opacity(0.2))
                         .cornerRadius(20)
                     }
+                    .accessibilityLabel("Skip phase")
+                    .accessibilityHint("Skips the current \(timerManager.state.phase.rawValue) phase and moves to the next")
                 }
 
                 if timerManager.state.phase == .rest {
@@ -222,6 +228,8 @@ struct TimerView: View {
                         .background(Color.white.opacity(0.2))
                         .cornerRadius(20)
                     }
+                    .accessibilityLabel("Add 20 seconds")
+                    .accessibilityHint("Adds 20 seconds of extra rest time")
                 }
             }
 
@@ -236,6 +244,8 @@ struct TimerView: View {
                         .background(Color.white.opacity(0.2))
                         .clipShape(Circle())
                 }
+                .accessibilityLabel("Stop")
+                .accessibilityHint("Stops the timer and returns to preset list")
 
                 if timerManager.state.phase != .finished {
                     Button {
@@ -248,6 +258,8 @@ struct TimerView: View {
                             .background(Color.white.opacity(0.3))
                             .clipShape(Circle())
                     }
+                    .accessibilityLabel(timerManager.state.isRunning ? "Pause" : "Resume")
+                    .accessibilityHint(timerManager.state.isRunning ? "Pauses the timer" : "Resumes the timer")
                 }
             }
         }

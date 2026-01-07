@@ -2,6 +2,42 @@
 
 A no-nonsense combat sports interval timer for iOS with Dynamic Island and Live Activity support.
 
+**No ads. No subscriptions. One-time lifetime purchase.**
+
+## App Store
+
+### Category
+Health & Fitness
+
+### Keywords
+boxing timer, mma timer, muay thai timer, bjj timer, hiit timer, interval timer, round timer, workout timer, combat sports, martial arts, kickboxing, sparring timer, training timer, fitness timer, tabata
+
+### Short Description
+Professional interval timer for boxing, MMA, BJJ, Muay Thai, and HIIT workouts. Dynamic Island support. No ads.
+
+### Full Description
+Ring Timer is the ultimate interval timer built for fighters and athletes. Whether you're boxing, rolling BJJ, doing Muay Thai rounds, or crushing a HIIT session - this timer keeps you focused on training, not fumbling with your phone.
+
+**Why Ring Timer?**
+- Start your timer and forget about your phone
+- Dynamic Island shows your countdown while multitasking
+- Lock screen Live Activity keeps you informed
+- Hands-free Siri voice commands (perfect when gloved up)
+- Color-coded phases you can see across the gym
+- Bell sounds and haptic feedback you can feel
+
+**Perfect for:**
+- Boxing (3-minute rounds)
+- MMA (5-minute rounds)
+- Muay Thai
+- Brazilian Jiu-Jitsu rolling
+- HIIT / Tabata workouts
+- Circuit training
+- Any interval-based training
+
+**100% Native. Zero Bloat.**
+Built entirely with Apple frameworks. No third-party tracking, no analytics, no data collection. Just a timer that works.
+
 ## Features
 
 - **Customizable Presets** - Create, edit, and save your own timer configurations
