@@ -28,7 +28,7 @@ struct ContentView: View {
     private var presetListView: some View {
         List {
             Section {
-                ForEach(presetStore.presets) { preset in
+                ForEach(Array(presetStore.presets.enumerated()), id: \.element.id) { index, preset in
                     PresetRow(preset: preset)
                         .contentShape(Rectangle())
                         .onTapGesture {
@@ -38,17 +38,19 @@ struct ContentView: View {
                             Button(role: .destructive) {
                                 presetStore.deletePreset(preset)
                             } label: {
-                                Label("Delete", systemImage: "trash")
+                                Image(systemName: "trash")
                             }
 
                             Button {
                                 editingPreset = preset
                                 showingPresetEditor = true
                             } label: {
-                                Label("Edit", systemImage: "pencil")
+                                Image(systemName: "pencil")
                             }
                             .tint(.blue)
                         }
+                        .listRowSeparator(.hidden, edges: .top)
+                        .listRowSeparator(index == presetStore.presets.count - 1 ? .hidden : .visible, edges: .bottom)
                 }
             } header: {
                 Text("Combat Sports Timer")
@@ -59,7 +61,7 @@ struct ContentView: View {
             } footer: {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Tap to start, swipe left to edit or delete")
-                    Text("\"Hey Siri, start PunchClock\"")
+                    Text("\"Hey Siri, start Boxing Standard with PunchClock\"")
                         .italic()
                 }
             }
@@ -123,6 +125,7 @@ struct PresetRow: View {
             .foregroundColor(.secondary)
         }
         .padding(.vertical, 4)
+        .alignmentGuide(.listRowSeparatorLeading) { _ in 0 }
     }
 
     private func formatTime(_ seconds: Int) -> String {
@@ -167,6 +170,17 @@ struct QuoteView: View {
         // Khabib Nurmagomedov
         ("If you work hard, the sky's the limit.", "Khabib Nurmagomedov"),
         ("Humble in victory, humble in defeat.", "Khabib Nurmagomedov"),
+
+        // Rickson Gracie
+        ("A brave man, a real fighter is not measured by how many times he falls, but how many times he stands up.", "Rickson Gracie"),
+        ("Flow with whatever may happen and let your mind be free.", "Rickson Gracie"),
+        ("If you want to be a lion, you must train with lions.", "Rickson Gracie"),
+        ("The biggest enemy you have is yourself.", "Rickson Gracie"),
+        ("Jiu-jitsu is about waiting for the right time to do the right move.", "Rickson Gracie"),
+
+        // Helio Gracie
+        ("Always assume that your opponent is going to be bigger, stronger and faster than you.", "Helio Gracie"),
+        ("There is no losing in jiu-jitsu. You either win or you learn.", "Carlos Gracie Sr."),
 
         // Georges St-Pierre
         ("I'm not impressed by your performance.", "Georges St-Pierre"),

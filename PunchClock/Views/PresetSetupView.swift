@@ -103,6 +103,7 @@ struct PresetSetupView: View {
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") { onCancel() }
+                        .foregroundColor(.red)
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button {
@@ -118,6 +119,7 @@ struct PresetSetupView: View {
                     } label: {
                         Text("Start")
                             .fontWeight(.bold)
+                            .foregroundColor(.green)
                     }
                 }
             }

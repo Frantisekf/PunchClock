@@ -4,6 +4,21 @@ struct TimerView: View {
     @ObservedObject var timerManager: TimerManager
     @Environment(\.colorScheme) var colorScheme
 
+    private static let finishQuotes: [(quote: String, author: String)] = [
+        ("Good.", "Jocko Willink"),
+        ("Hard work beats talent when talent doesn't work hard.", "Tim Notke"),
+        ("You did what others wouldn't. Now you'll have what others won't.", ""),
+        ("The only bad workout is the one that didn't happen.", ""),
+        ("Respect the grind.", ""),
+        ("One more day. One more step. One more round.", ""),
+        ("You don't get what you wish for. You get what you work for.", ""),
+        ("Pain is temporary. Pride is forever.", ""),
+        ("The body achieves what the mind believes.", ""),
+        ("Sweat now. Shine later.", "")
+    ]
+
+    @State private var finishQuote = finishQuotes.randomElement() ?? finishQuotes[0]
+
     private var phaseColor: Color {
         switch timerManager.state.phase {
         case .idle:
@@ -15,8 +30,19 @@ struct TimerView: View {
         case .rest:
             return colorScheme == .dark ? Color.green.opacity(0.4) : .green
         case .finished:
-            return colorScheme == .dark ? Color.blue.opacity(0.4) : .blue
+            return colorScheme == .dark ? Color.green.opacity(0.5) : .green
         }
+    }
+
+    private var formattedElapsedTime: String {
+        let total = timerManager.totalElapsedTime
+        let hours = total / 3600
+        let minutes = (total % 3600) / 60
+        let seconds = total % 60
+        if hours > 0 {
+            return String(format: "%d:%02d:%02d", hours, minutes, seconds)
+        }
+        return String(format: "%d:%02d", minutes, seconds)
     }
 
     var body: some View {
@@ -25,36 +51,98 @@ struct TimerView: View {
                 .ignoresSafeArea()
                 .animation(.easeInOut(duration: 0.3), value: timerManager.state.phase)
 
-            VStack(spacing: 20) {
-                Spacer()
+            if timerManager.state.phase == .finished {
+                finishedView
+            } else {
+                VStack(spacing: 20) {
+                    Spacer()
 
-                Text(timerManager.state.phaseDisplayName)
-                    .font(.system(size: 32, weight: .bold))
-                    .foregroundColor(.white.opacity(0.9))
+                    Text(timerManager.state.phaseDisplayName)
+                        .font(.system(size: 32, weight: .bold))
+                        .foregroundColor(.white.opacity(0.9))
 
-                Text(timerManager.state.formattedTime)
-                    .font(.system(size: 120, weight: .bold, design: .monospaced))
-                    .foregroundColor(.white)
-                    .minimumScaleFactor(0.5)
-                    .lineLimit(1)
+                    Text(timerManager.state.formattedTime)
+                        .font(.system(size: 120, weight: .bold, design: .monospaced))
+                        .foregroundColor(.white)
+                        .minimumScaleFactor(0.5)
+                        .lineLimit(1)
 
-                if let preset = timerManager.currentPreset {
-                    RoundProgressView(
-                        currentRound: timerManager.state.currentRound,
-                        totalRounds: preset.numberOfRounds,
-                        phase: timerManager.state.phase
-                    )
-                    .padding(.horizontal, 40)
+                    if let preset = timerManager.currentPreset {
+                        RoundProgressView(
+                            currentRound: timerManager.state.currentRound,
+                            totalRounds: preset.numberOfRounds,
+                            phase: timerManager.state.phase
+                        )
+                        .padding(.horizontal, 40)
+                    }
+
+                    Spacer()
+
+                    controlsView
+                        .padding(.bottom, 50)
                 }
-
-                Spacer()
-
-                controlsView
-                    .padding(.bottom, 50)
             }
         }
         .navigationBarHidden(true)
         .statusBar(hidden: true)
+    }
+
+    private var finishedView: some View {
+        VStack(spacing: 30) {
+            Spacer()
+
+            Image(systemName: "checkmark.circle.fill")
+                .font(.system(size: 80))
+                .foregroundColor(.white)
+
+            Text("FINISHED")
+                .font(.system(size: 48, weight: .bold))
+                .foregroundColor(.white)
+
+            VStack(spacing: 8) {
+                Text("Total Time")
+                    .font(.subheadline)
+                    .foregroundColor(.white.opacity(0.8))
+                Text(formattedElapsedTime)
+                    .font(.system(size: 60, weight: .bold, design: .monospaced))
+                    .foregroundColor(.white)
+            }
+
+            if let preset = timerManager.currentPreset {
+                Text("\(preset.numberOfRounds) rounds completed")
+                    .font(.title3)
+                    .foregroundColor(.white.opacity(0.8))
+            }
+
+            Spacer()
+
+            VStack(spacing: 8) {
+                Text(finishQuote.quote)
+                    .font(.title3)
+                    .italic()
+                    .foregroundColor(.white.opacity(0.9))
+                    .multilineTextAlignment(.center)
+                if !finishQuote.author.isEmpty {
+                    Text("— \(finishQuote.author)")
+                        .font(.subheadline)
+                        .foregroundColor(.white.opacity(0.7))
+                }
+            }
+            .padding(.horizontal, 40)
+
+            Button {
+                timerManager.stop()
+            } label: {
+                Text("Done")
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.green)
+                    .frame(width: 200, height: 56)
+                    .background(Color.white)
+                    .cornerRadius(28)
+            }
+            .padding(.bottom, 50)
+        }
     }
 
     private var controlsView: some View {

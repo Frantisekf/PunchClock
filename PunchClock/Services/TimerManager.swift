@@ -5,10 +5,12 @@ import UIKit
 
 final class TimerManager: ObservableObject {
     @Published var state = TimerState()
+    @Published var totalElapsedTime: Int = 0
 
     private var timer: Timer?
     private var preset: Preset?
     private var phaseEndTime: Date?
+    private var startTime: Date?
     private var backgroundTask: UIBackgroundTaskIdentifier = .invalid
     private var foregroundObserver: NSObjectProtocol?
     private let soundManager = SoundManager.shared
@@ -42,6 +44,8 @@ final class TimerManager: ObservableObject {
         state.phase = .prepare
         state.timeRemaining = preset.prepareTime
         state.isRunning = true
+        startTime = Date()
+        totalElapsedTime = 0
         phaseEndTime = Date().addingTimeInterval(TimeInterval(state.timeRemaining))
 
         soundManager.setupAudioSession()
@@ -190,6 +194,10 @@ final class TimerManager: ObservableObject {
     private func tick() {
         guard let preset = preset else { return }
 
+        if let start = startTime {
+            totalElapsedTime = Int(Date().timeIntervalSince(start))
+        }
+
         handleSoundCues()
 
         if state.timeRemaining > 0 {
@@ -246,6 +254,9 @@ final class TimerManager: ObservableObject {
                 state.phase = .finished
                 state.isRunning = false
                 phaseEndTime = nil
+                if let start = startTime {
+                    totalElapsedTime = Int(Date().timeIntervalSince(start))
+                }
                 timer?.invalidate()
                 timer = nil
                 endBackgroundTask()
