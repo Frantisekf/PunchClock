@@ -229,6 +229,12 @@ struct QuoteView: View {
         }
         .padding(.vertical, 4)
         .listRowBackground(Color.clear)
+        .contentShape(Rectangle())
+        .onTapGesture {
+            withAnimation(.easeInOut(duration: 0.2)) {
+                currentQuote = Self.quotes.randomElement() ?? Self.quotes[0]
+            }
+        }
     }
 }
 
