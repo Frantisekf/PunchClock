@@ -114,7 +114,7 @@ struct PresetRow: View {
     let preset: Preset
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 4) {
+        VStack(alignment: .leading, spacing: 6) {
             Text(preset.name)
                 .font(.headline)
 

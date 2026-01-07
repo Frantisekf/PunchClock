@@ -9,31 +9,122 @@ import XCTest
 
 final class PunchClockUITests: XCTestCase {
 
+    var app: XCUIApplication!
+
     override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-
-        // In UI tests it is usually best to stop immediately when a failure occurs.
         continueAfterFailure = false
-
-        // In UI tests it’s important to set the initial state - such as interface orientation - required for your tests before they run. The setUp method is a good place to do this.
+        app = XCUIApplication()
+        app.launch()
     }
 
     override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        app = nil
+    }
+
+    // MARK: - Main Screen Tests
+
+    @MainActor
+    func testAppLaunches() throws {
+        XCTAssertTrue(app.navigationBars["Ring Timer"].exists)
     }
 
     @MainActor
-    func testExample() throws {
-        // UI tests must launch the application that they test.
-        let app = XCUIApplication()
-        app.launch()
-
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testPresetsListExists() throws {
+        // Check that preset list is visible
+        XCTAssertTrue(app.staticTexts["Boxing Standard"].exists)
     }
+
+    @MainActor
+    func testDefaultPresetsVisible() throws {
+        XCTAssertTrue(app.staticTexts["Boxing Standard"].exists)
+        XCTAssertTrue(app.staticTexts["MMA Style"].exists)
+        XCTAssertTrue(app.staticTexts["Muay Thai"].exists)
+        XCTAssertTrue(app.staticTexts["BJJ Rolling"].exists)
+        XCTAssertTrue(app.staticTexts["Quick Training"].exists)
+    }
+
+    @MainActor
+    func testAddButtonExists() throws {
+        XCTAssertTrue(app.navigationBars.buttons["Add"].exists || app.buttons["plus"].exists)
+    }
+
+    // MARK: - Preset Selection Tests
+
+    @MainActor
+    func testTapPresetOpensSetup() throws {
+        app.staticTexts["Boxing Standard"].tap()
+
+        // Should show the preset setup sheet
+        let startButton = app.buttons["Start"]
+        XCTAssertTrue(startButton.waitForExistence(timeout: 2))
+    }
+
+    @MainActor
+    func testPresetSetupHasStartButton() throws {
+        app.staticTexts["Boxing Standard"].tap()
+
+        let startButton = app.buttons["Start"]
+        XCTAssertTrue(startButton.waitForExistence(timeout: 2))
+    }
+
+    @MainActor
+    func testPresetSetupCanBeCancelled() throws {
+        app.staticTexts["Boxing Standard"].tap()
+
+        let cancelButton = app.buttons["Cancel"]
+        XCTAssertTrue(cancelButton.waitForExistence(timeout: 2))
+
+        cancelButton.tap()
+
+        // Should be back to main screen
+        XCTAssertTrue(app.staticTexts["Boxing Standard"].waitForExistence(timeout: 2))
+    }
+
+    // MARK: - Timer Tests
+
+    @MainActor
+    func testStartTimer() throws {
+        app.staticTexts["Boxing Standard"].tap()
+
+        let startButton = app.buttons["Start"]
+        XCTAssertTrue(startButton.waitForExistence(timeout: 2))
+        startButton.tap()
+
+        // Timer should be running - look for phase indicator
+        let getReadyText = app.staticTexts["Get Ready"]
+        XCTAssertTrue(getReadyText.waitForExistence(timeout: 2))
+    }
+
+    @MainActor
+    func testTimerHasPauseButton() throws {
+        app.staticTexts["Boxing Standard"].tap()
+
+        let startButton = app.buttons["Start"]
+        XCTAssertTrue(startButton.waitForExistence(timeout: 2))
+        startButton.tap()
+
+        // Should have pause button
+        let pauseButton = app.buttons["Pause"]
+        XCTAssertTrue(pauseButton.waitForExistence(timeout: 2))
+    }
+
+    @MainActor
+    func testTimerHasStopButton() throws {
+        app.staticTexts["Boxing Standard"].tap()
+
+        let startButton = app.buttons["Start"]
+        XCTAssertTrue(startButton.waitForExistence(timeout: 2))
+        startButton.tap()
+
+        // Should have stop button
+        let stopButton = app.buttons["Stop"]
+        XCTAssertTrue(stopButton.waitForExistence(timeout: 2))
+    }
+
+    // MARK: - Performance Tests
 
     @MainActor
     func testLaunchPerformance() throws {
-        // This measures how long it takes to launch your application.
         measure(metrics: [XCTApplicationLaunchMetric()]) {
             XCUIApplication().launch()
         }

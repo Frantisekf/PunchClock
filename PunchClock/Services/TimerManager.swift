@@ -308,10 +308,6 @@ final class TimerManager: ObservableObject {
             }
 
         case .round:
-            if state.timeRemaining == 10 {
-                soundManager.playStickPunch()
-                hapticMedium.impactOccurred()
-            }
             if state.timeRemaining <= 3 && state.timeRemaining > 0 {
                 soundManager.playCountdown()
                 hapticMedium.impactOccurred()

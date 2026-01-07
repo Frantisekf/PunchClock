@@ -6,30 +6,127 @@
 //
 
 import XCTest
+@testable import PunchClock
 
 final class PunchClockTests: XCTestCase {
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    // MARK: - Preset Tests
+
+    func testPresetInitialization() throws {
+        let preset = Preset(
+            name: "Test Preset",
+            prepareTime: 10,
+            roundTime: 180,
+            restTime: 60,
+            numberOfRounds: 3
+        )
+
+        XCTAssertEqual(preset.name, "Test Preset")
+        XCTAssertEqual(preset.prepareTime, 10)
+        XCTAssertEqual(preset.roundTime, 180)
+        XCTAssertEqual(preset.restTime, 60)
+        XCTAssertEqual(preset.numberOfRounds, 3)
     }
 
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    func testDefaultPresetsExist() throws {
+        let presets = Preset.defaultPresets
+
+        XCTAssertFalse(presets.isEmpty)
+        XCTAssertTrue(presets.contains { $0.name == "Boxing Standard" })
+        XCTAssertTrue(presets.contains { $0.name == "MMA Style" })
+        XCTAssertTrue(presets.contains { $0.name == "Muay Thai" })
+        XCTAssertTrue(presets.contains { $0.name == "BJJ Rolling" })
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    func testBoxingPresetValues() throws {
+        let boxing = Preset.boxingStandard
+
+        XCTAssertEqual(boxing.name, "Boxing Standard")
+        XCTAssertEqual(boxing.roundTime, 180) // 3 minutes
+        XCTAssertEqual(boxing.restTime, 60)   // 1 minute
+        XCTAssertEqual(boxing.numberOfRounds, 12)
     }
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        measure {
-            // Put the code you want to measure the time of here.
+    func testBJJPresetValues() throws {
+        let bjj = Preset.bjjRolling
+
+        XCTAssertEqual(bjj.name, "BJJ Rolling")
+        XCTAssertEqual(bjj.roundTime, 360) // 6 minutes
+        XCTAssertEqual(bjj.restTime, 60)   // 1 minute
+        XCTAssertEqual(bjj.numberOfRounds, 5)
+    }
+
+    // MARK: - Timer State Tests
+
+    func testTimerStateInitialValues() throws {
+        let state = TimerState()
+
+        XCTAssertEqual(state.phase, .idle)
+        XCTAssertEqual(state.timeRemaining, 0)
+        XCTAssertEqual(state.currentRound, 0)
+        XCTAssertFalse(state.isRunning)
+    }
+
+    func testTimerPhaseRawValues() throws {
+        XCTAssertEqual(TimerPhase.idle.rawValue, "idle")
+        XCTAssertEqual(TimerPhase.prepare.rawValue, "prepare")
+        XCTAssertEqual(TimerPhase.round.rawValue, "round")
+        XCTAssertEqual(TimerPhase.rest.rawValue, "rest")
+        XCTAssertEqual(TimerPhase.finished.rawValue, "finished")
+    }
+
+    // MARK: - Preset Store Tests
+
+    func testPresetStoreInitialization() throws {
+        let store = PresetStore()
+
+        XCTAssertFalse(store.presets.isEmpty)
+    }
+
+    func testPresetStoreAddPreset() throws {
+        let store = PresetStore()
+        let initialCount = store.presets.count
+
+        let newPreset = Preset(
+            name: "Custom Test",
+            prepareTime: 5,
+            roundTime: 120,
+            restTime: 30,
+            numberOfRounds: 5
+        )
+
+        store.addPreset(newPreset)
+
+        XCTAssertEqual(store.presets.count, initialCount + 1)
+        XCTAssertTrue(store.presets.contains { $0.name == "Custom Test" })
+    }
+
+    func testPresetStoreDeletePreset() throws {
+        let store = PresetStore()
+        let initialCount = store.presets.count
+
+        if let firstPreset = store.presets.first {
+            store.deletePreset(firstPreset)
+            XCTAssertEqual(store.presets.count, initialCount - 1)
         }
     }
 
+    // MARK: - Time Formatting Tests
+
+    func testTotalWorkoutTime() throws {
+        let preset = Preset(
+            name: "Test",
+            prepareTime: 10,
+            roundTime: 180,
+            restTime: 60,
+            numberOfRounds: 3
+        )
+
+        // Total = prepare + (rounds * roundTime) + ((rounds - 1) * restTime)
+        // Total = 10 + (3 * 180) + (2 * 60) = 10 + 540 + 120 = 670 seconds
+        let expectedTotal = 10 + (3 * 180) + (2 * 60)
+        let actualTotal = preset.prepareTime + (preset.numberOfRounds * preset.roundTime) + ((preset.numberOfRounds - 1) * preset.restTime)
+
+        XCTAssertEqual(actualTotal, expectedTotal)
+    }
 }
