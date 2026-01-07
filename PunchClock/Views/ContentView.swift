@@ -28,24 +28,14 @@ struct ContentView: View {
     }
 
     private var presetListView: some View {
-        let sortedPresets = presetStore.sortedPresets
-        return List {
+        List {
             Section {
-                ForEach(Array(sortedPresets.enumerated()), id: \.element.id) { index, preset in
+                ForEach(Array(presetStore.presets.enumerated()), id: \.element.id) { index, preset in
                     PresetRow(preset: preset)
                         .contentShape(Rectangle())
                         .onTapGesture {
                             HapticManager.shared.lightTap()
                             selectedPreset = preset
-                        }
-                        .swipeActions(edge: .leading, allowsFullSwipe: true) {
-                            Button {
-                                HapticManager.shared.lightTap()
-                                presetStore.toggleFavorite(preset)
-                            } label: {
-                                Image(systemName: preset.isFavorite ? "star.slash" : "star.fill")
-                            }
-                            .tint(.yellow)
                         }
                         .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                             Button(role: .destructive) {
@@ -63,7 +53,7 @@ struct ContentView: View {
                             .tint(.blue)
                         }
                         .listRowSeparator(.hidden, edges: .top)
-                        .listRowSeparator(index == sortedPresets.count - 1 ? .hidden : .visible, edges: .bottom)
+                        .listRowSeparator(index == presetStore.presets.count - 1 ? .hidden : .visible, edges: .bottom)
                 }
             } header: {
                 Text("Combat Sports Timer")
@@ -152,15 +142,8 @@ struct PresetRow: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
-            HStack(spacing: 6) {
-                Text(preset.name)
-                    .font(.headline)
-                if preset.isFavorite {
-                    Image(systemName: "star.fill")
-                        .font(.caption)
-                        .foregroundColor(.yellow)
-                }
-            }
+            Text(preset.name)
+                .font(.headline)
 
             HStack(spacing: 12) {
                 Label(formatTime(preset.roundTime), systemImage: "timer")
@@ -253,7 +236,43 @@ struct QuoteView: View {
         // Other fighters
         ("Hard work and training. There's no secret formula.", "Manny Pacquiao"),
         ("It ain't about how hard you hit. It's about how hard you can get hit and keep moving forward.", "Rocky Balboa"),
-        ("The more I train, the luckier I get.", "Sugar Ray Leonard")
+        ("The more I train, the luckier I get.", "Sugar Ray Leonard"),
+
+        // Jocko Willink
+        ("Discipline equals freedom.", "Jocko Willink"),
+        ("Don't expect to be motivated every day. You won't be. Get up and go.", "Jocko Willink"),
+        ("The only way to truly fail is to give up.", "Jocko Willink"),
+        ("Get after it.", "Jocko Willink"),
+        ("Default aggressive.", "Jocko Willink"),
+        ("Don't count on motivation. Count on discipline.", "Jocko Willink"),
+        ("You have to own everything in your world. That's what it means to be a leader.", "Jocko Willink"),
+        ("Hesitation is the enemy. It will kill you.", "Jocko Willink"),
+
+        // David Goggins
+        ("You are in danger of living a life so comfortable and soft, that you will die without ever realizing your potential.", "David Goggins"),
+        ("We live in a world where mediocrity is often rewarded. Don't buy into that.", "David Goggins"),
+        ("When you think you're done, you're only at 40% of your potential.", "David Goggins"),
+        ("Suffering is the true test of life.", "David Goggins"),
+        ("Stay hard.", "David Goggins"),
+
+        // Stoic Philosophy
+        ("We suffer more often in imagination than in reality.", "Seneca"),
+        ("He who fears death will never do anything worthy of a living man.", "Seneca"),
+        ("No man is free who is not master of himself.", "Epictetus"),
+        ("It is not death that a man should fear, but he should fear never beginning to live.", "Marcus Aurelius"),
+        ("You have power over your mind, not outside events. Realize this, and you will find strength.", "Marcus Aurelius"),
+        ("The obstacle is the way.", "Marcus Aurelius"),
+        ("What stands in the way becomes the way.", "Marcus Aurelius"),
+        ("First say to yourself what you would be; then do what you have to do.", "Epictetus"),
+        ("Difficulties strengthen the mind, as labor does the body.", "Seneca"),
+        ("A gem cannot be polished without friction, nor a man perfected without trials.", "Seneca"),
+
+        // More fighters
+        ("I don't count my sit-ups. I only start counting when it starts hurting.", "Muhammad Ali"),
+        ("Champions keep playing until they get it right.", "Billie Jean King"),
+        ("The more you train, the less you bleed.", "Navy SEAL saying"),
+        ("Pain is weakness leaving the body.", "U.S. Marines"),
+        ("Sweat more in training, bleed less in war.", "Spartan Warrior Creed")
     ]
 
     @State private var currentQuote: (quote: String, author: String)

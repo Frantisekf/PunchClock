@@ -203,6 +203,11 @@ final class TimerManager: ObservableObject {
         guard let preset = preset else { return }
         state.timeRemaining = 0
         transitionToNextPhase(preset: preset)
+
+        // Auto-resume if paused
+        if !state.isRunning && state.phase != .finished {
+            resume()
+        }
     }
 
     func addTime(_ seconds: Int) {

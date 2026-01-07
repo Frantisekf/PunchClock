@@ -132,8 +132,7 @@ struct PresetSetupView: View {
                             prepareTime: max(prepareTime, 5),
                             roundTime: roundMinutes * 60 + roundSeconds,
                             restTime: restMinutes * 60 + restSeconds,
-                            numberOfRounds: rounds,
-                            isFavorite: preset.isFavorite
+                            numberOfRounds: rounds
                         )
                         onStart(adjustedPreset)
                     } label: {

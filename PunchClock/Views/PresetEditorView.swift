@@ -156,8 +156,7 @@ struct PresetEditorView: View {
             prepareTime: max(prepareTime, 5),
             roundTime: max(roundTime, 10),
             restTime: max(restTime, 5),
-            numberOfRounds: numberOfRounds,
-            isFavorite: preset?.isFavorite ?? false
+            numberOfRounds: numberOfRounds
         )
 
         onSave(newPreset)
