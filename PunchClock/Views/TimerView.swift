@@ -22,15 +22,15 @@ struct TimerView: View {
     private var phaseColor: Color {
         switch timerManager.state.phase {
         case .idle:
-            return colorScheme == .dark ? Color.gray.opacity(0.3) : .gray
+            return .gray
         case .prepare:
-            return colorScheme == .dark ? Color.yellow.opacity(0.4) : .yellow
+            return Color(red: 0.95, green: 0.75, blue: 0.1)
         case .round:
-            return colorScheme == .dark ? Color.red.opacity(0.5) : .red
+            return Color(red: 0.9, green: 0.2, blue: 0.2)
         case .rest:
-            return colorScheme == .dark ? Color.green.opacity(0.4) : .green
+            return Color(red: 0.2, green: 0.75, blue: 0.4)
         case .finished:
-            return colorScheme == .dark ? Color.green.opacity(0.5) : .green
+            return Color(red: 0.2, green: 0.75, blue: 0.4)
         }
     }
 
@@ -55,6 +55,20 @@ struct TimerView: View {
                 finishedView
             } else {
                 VStack(spacing: 20) {
+                    HStack {
+                        Spacer()
+                        Button {
+                            timerManager.isMuted.toggle()
+                        } label: {
+                            Image(systemName: timerManager.isMuted ? "speaker.slash.fill" : "speaker.wave.2.fill")
+                                .font(.system(size: 22))
+                                .foregroundColor(.white.opacity(0.8))
+                                .frame(width: 44, height: 44)
+                        }
+                        .padding(.trailing, 20)
+                        .padding(.top, 10)
+                    }
+
                     Spacer()
 
                     Text(timerManager.state.phaseDisplayName)

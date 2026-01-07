@@ -6,6 +6,7 @@ import UIKit
 final class TimerManager: ObservableObject {
     @Published var state = TimerState()
     @Published var totalElapsedTime: Int = 0
+    @Published var isMuted: Bool = false
 
     private var timer: Timer?
     private var preset: Preset?
@@ -208,6 +209,8 @@ final class TimerManager: ObservableObject {
     }
 
     private func handleSoundCues() {
+        guard !isMuted else { return }
+
         switch state.phase {
         case .prepare:
             if state.timeRemaining <= 3 && state.timeRemaining > 0 {
@@ -239,16 +242,20 @@ final class TimerManager: ObservableObject {
     private func transitionToNextPhase(preset: Preset) {
         switch state.phase {
         case .prepare:
-            soundManager.playBell()
-            hapticHeavy.impactOccurred()
+            if !isMuted {
+                soundManager.playBell()
+                hapticHeavy.impactOccurred()
+            }
             state.phase = .round
             state.timeRemaining = preset.roundTime
             phaseEndTime = Date().addingTimeInterval(TimeInterval(state.timeRemaining))
             updateLiveActivity()
 
         case .round:
-            soundManager.playBell()
-            hapticHeavy.impactOccurred()
+            if !isMuted {
+                soundManager.playBell()
+                hapticHeavy.impactOccurred()
+            }
 
             if state.currentRound >= preset.numberOfRounds {
                 state.phase = .finished
@@ -269,8 +276,10 @@ final class TimerManager: ObservableObject {
             }
 
         case .rest:
-            soundManager.playBell()
-            hapticHeavy.impactOccurred()
+            if !isMuted {
+                soundManager.playBell()
+                hapticHeavy.impactOccurred()
+            }
             state.currentRound += 1
             state.phase = .round
             state.timeRemaining = preset.roundTime
