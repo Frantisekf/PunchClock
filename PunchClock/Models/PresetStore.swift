@@ -1,8 +1,8 @@
 import Foundation
-import Combine
 import SwiftUI
+import Combine
 
-class PresetStore: ObservableObject {
+final class PresetStore: ObservableObject {
     @Published var presets: [Preset] = []
 
     private let saveKey = "SavedPresets"
@@ -16,7 +16,6 @@ class PresetStore: ObservableObject {
            let decoded = try? JSONDecoder().decode([Preset].self, from: data) {
             presets = decoded
         } else {
-            // First launch - use default presets
             presets = Preset.defaultPresets
             savePresets()
         }

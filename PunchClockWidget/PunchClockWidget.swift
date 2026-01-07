@@ -1,10 +1,3 @@
-//
-//  PunchClockWidget.swift
-//  PunchClockWidget
-//
-//  Created by Frantisek Farkas on 07.01.2026.
-//
-
 import WidgetKit
 import SwiftUI
 
@@ -30,14 +23,13 @@ struct Provider: TimelineProvider {
     func placeholder(in context: Context) -> SimpleEntry {
         SimpleEntry(date: Date())
     }
+
     func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let entry = SimpleEntry(date: Date())
-        completion(entry)
+        completion(SimpleEntry(date: Date()))
     }
 
     func getTimeline(in context: Context, completion: @escaping (Timeline<Entry>) -> ()) {
-        let entry = SimpleEntry(date: Date())
-        let timeline = Timeline(entries: [entry], policy: .atEnd)
+        let timeline = Timeline(entries: [SimpleEntry(date: Date())], policy: .atEnd)
         completion(timeline)
     }
 }
@@ -50,10 +42,10 @@ struct PunchClockWidgetEntryView: View {
             Image(systemName: "timer")
                 .font(.system(size: 40))
                 .foregroundStyle(.red)
-            
+
             Text("Punch Clock")
                 .font(.headline)
-            
+
             Text(entry.date, style: .time)
                 .font(.caption)
                 .foregroundStyle(.secondary)
@@ -66,6 +58,3 @@ struct PunchClockWidgetEntryView: View {
 } timeline: {
     SimpleEntry(date: .now)
 }
-
-
-

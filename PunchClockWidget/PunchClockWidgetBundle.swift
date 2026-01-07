@@ -1,10 +1,3 @@
-//
-//  PunchClockWidgetBundle.swift
-//  PunchClockWidget
-//
-//  Created by Frantisek Farkas on 07.01.2026.
-//
-
 import WidgetKit
 import SwiftUI
 

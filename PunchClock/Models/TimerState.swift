@@ -16,16 +16,11 @@ struct TimerState {
 
     var phaseDisplayName: String {
         switch phase {
-        case .idle:
-            return "Ready"
-        case .prepare:
-            return "Get Ready"
-        case .round:
-            return "Round \(currentRound)"
-        case .rest:
-            return "Rest"
-        case .finished:
-            return "Finished"
+        case .idle: return "Ready"
+        case .prepare: return "Get Ready"
+        case .round: return "Round \(currentRound)"
+        case .rest: return "Rest"
+        case .finished: return "Finished"
         }
     }
 

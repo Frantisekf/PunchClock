@@ -17,7 +17,7 @@ struct ContentView: View {
         }
     }
 
-    var presetListView: some View {
+    private var presetListView: some View {
         List {
             Section {
                 ForEach(presetStore.presets) { preset in
@@ -25,7 +25,6 @@ struct ContentView: View {
                         .contentShape(Rectangle())
                         .onTapGesture {
                             selectedPreset = preset
-                            timerManager.start(with: preset)
                         }
                         .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                             Button(role: .destructive) {
@@ -44,9 +43,17 @@ struct ContentView: View {
                         }
                 }
             } header: {
-                Text("Presets")
+                Text("Combat Sports Timer")
+                    .font(.subheadline)
+                    .fontWeight(.regular)
+                    .foregroundColor(.secondary)
+                    .textCase(nil)
             } footer: {
-                Text("Tap a preset to start the timer")
+                Text("Tap a preset to configure and start")
+            }
+
+            Section {
+                QuoteView()
             }
         }
         .navigationTitle("PunchClock")
@@ -69,6 +76,18 @@ struct ContentView: View {
                     } else {
                         presetStore.addPreset(preset)
                     }
+                }
+            )
+        }
+        .sheet(item: $selectedPreset) { preset in
+            PresetSetupView(
+                preset: preset,
+                onStart: { adjustedPreset in
+                    selectedPreset = nil
+                    timerManager.start(with: adjustedPreset)
+                },
+                onCancel: {
+                    selectedPreset = nil
                 }
             )
         }
@@ -101,6 +120,89 @@ struct PresetRow: View {
             return "\(minutes)min"
         }
         return "\(minutes):\(String(format: "%02d", secs))"
+    }
+}
+
+struct QuoteView: View {
+    private static let quotes: [(quote: String, author: String)] = [
+        // Muhammad Ali
+        ("Float like a butterfly, sting like a bee.", "Muhammad Ali"),
+        ("Champions aren't made in gyms. Champions are made from something deep inside them.", "Muhammad Ali"),
+        ("I hated every minute of training, but I said, don't quit. Suffer now and live the rest of your life as a champion.", "Muhammad Ali"),
+        ("The fight is won or lost far away from witnesses – behind the lines, in the gym.", "Muhammad Ali"),
+        ("To be a great champion you must believe you are the best. If you're not, pretend you are.", "Muhammad Ali"),
+        ("You don't lose if you get knocked down; you lose if you stay down.", "Muhammad Ali"),
+        ("I am the greatest. I said that even before I knew I was.", "Muhammad Ali"),
+        ("He who is not courageous enough to take risks will accomplish nothing in life.", "Muhammad Ali"),
+
+        // Mike Tyson
+        ("Everyone has a plan until they get punched in the face.", "Mike Tyson"),
+        ("Discipline is doing what you hate to do, but doing it like you love it.", "Mike Tyson"),
+        ("I'm a dreamer. I have to dream and reach for the stars.", "Mike Tyson"),
+
+        // Bruce Lee
+        ("I fear not the man who has practiced 10,000 kicks once, but I fear the man who has practiced one kick 10,000 times.", "Bruce Lee"),
+        ("Be water, my friend.", "Bruce Lee"),
+        ("The successful warrior is the average man, with laser-like focus.", "Bruce Lee"),
+        ("Adapt what is useful, reject what is useless, and add what is specifically your own.", "Bruce Lee"),
+
+        // Conor McGregor
+        ("We're not just here to take part, we're here to take over.", "Conor McGregor"),
+        ("There's no talent here, this is hard work. This is an obsession.", "Conor McGregor"),
+        ("I stay ready so I don't have to get ready.", "Conor McGregor"),
+        ("Doubt is only removed by action.", "Conor McGregor"),
+
+        // Khabib Nurmagomedov
+        ("If you work hard, the sky's the limit.", "Khabib Nurmagomedov"),
+        ("Humble in victory, humble in defeat.", "Khabib Nurmagomedov"),
+
+        // Georges St-Pierre
+        ("I'm not impressed by your performance.", "Georges St-Pierre"),
+        ("I'm not the best because I beat everyone. I'm the best because I beat myself.", "Georges St-Pierre"),
+
+        // Anderson Silva
+        ("I'm not afraid of anyone, but I respect everyone.", "Anderson Silva"),
+
+        // Ronda Rousey
+        ("Some people like to call me cocky or arrogant, but I just think, how dare you assume I should think less of myself.", "Ronda Rousey"),
+
+        // Nate Diaz
+        ("I'm not surprised, motherfuckers.", "Nate Diaz"),
+        ("Don't be scared, homie.", "Nate Diaz"),
+
+        // Classic Boxing
+        ("It's not whether you get knocked down, it's whether you get up.", "Vince Lombardi"),
+        ("A champion is someone who gets up when they can't.", "Jack Dempsey"),
+        ("The hardest battle you'll ever fight is the battle to be yourself.", "Cus D'Amato"),
+        ("The more you sweat in training, the less you bleed in combat.", "Richard Marcinko"),
+        ("To see a man beaten not by a better opponent but by himself is a tragedy.", "Cus D'Amato"),
+
+        // Other fighters
+        ("Hard work and training. There's no secret formula.", "Manny Pacquiao"),
+        ("It ain't about how hard you hit. It's about how hard you can get hit and keep moving forward.", "Rocky Balboa"),
+        ("The more I train, the luckier I get.", "Sugar Ray Leonard")
+    ]
+
+    @State private var currentQuote: (quote: String, author: String)
+
+    init() {
+        _currentQuote = State(initialValue: Self.quotes.randomElement() ?? Self.quotes[0])
+    }
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(currentQuote.quote)
+                .font(.subheadline)
+                .italic()
+                .foregroundColor(.secondary)
+
+            Text("— \(currentQuote.author)")
+                .font(.caption)
+                .fontWeight(.medium)
+                .foregroundColor(.secondary.opacity(0.8))
+        }
+        .padding(.vertical, 4)
+        .listRowBackground(Color.clear)
     }
 }
 

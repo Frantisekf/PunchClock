@@ -14,9 +14,7 @@ struct PresetEditorView: View {
     @State private var restSeconds: Int = 0
     @State private var numberOfRounds: Int = 12
 
-    var isEditing: Bool {
-        preset != nil
-    }
+    private var isEditing: Bool { preset != nil }
 
     var body: some View {
         NavigationStack {
@@ -25,11 +23,11 @@ struct PresetEditorView: View {
                     TextField("Preset Name", text: $name)
                 }
 
-                Section("Prepare Time") {
-                    Stepper("\(prepareTime) seconds", value: $prepareTime, in: 3...30)
+                Section("Rounds") {
+                    Stepper("\(numberOfRounds) rounds", value: $numberOfRounds, in: 1...20)
                 }
 
-                Section("Round Duration") {
+                Section {
                     HStack {
                         Picker("Minutes", selection: $roundMinutes) {
                             ForEach(0...10, id: \.self) { minute in
@@ -46,9 +44,12 @@ struct PresetEditorView: View {
                         .pickerStyle(.wheel)
                     }
                     .frame(height: 120)
+                } header: {
+                    Label("Round Duration", systemImage: "flame.fill")
+                        .foregroundColor(.red)
                 }
 
-                Section("Rest Duration") {
+                Section {
                     HStack {
                         Picker("Minutes", selection: $restMinutes) {
                             ForEach(0...5, id: \.self) { minute in
@@ -65,26 +66,28 @@ struct PresetEditorView: View {
                         .pickerStyle(.wheel)
                     }
                     .frame(height: 120)
+                } header: {
+                    Label("Rest Duration", systemImage: "pause.circle.fill")
+                        .foregroundColor(.green)
                 }
 
-                Section("Number of Rounds") {
-                    Stepper("\(numberOfRounds) rounds", value: $numberOfRounds, in: 1...20)
+                Section {
+                    Stepper("\(prepareTime) seconds", value: $prepareTime, in: 3...30)
+                } header: {
+                    Label("Prepare Time", systemImage: "clock.badge.exclamationmark")
+                        .foregroundColor(.yellow)
                 }
             }
             .navigationTitle(isEditing ? "Edit Preset" : "New Preset")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
-                    Button("Cancel") {
-                        dismiss()
-                    }
+                    Button("Cancel") { dismiss() }
                 }
 
                 ToolbarItem(placement: .confirmationAction) {
-                    Button("Save") {
-                        savePreset()
-                    }
-                    .disabled(name.isEmpty)
+                    Button("Save") { savePreset() }
+                        .disabled(name.isEmpty)
                 }
             }
             .onAppear {
@@ -109,8 +112,8 @@ struct PresetEditorView: View {
             id: preset?.id ?? UUID(),
             name: name,
             prepareTime: prepareTime,
-            roundTime: max(roundTime, 10), // Minimum 10 seconds
-            restTime: max(restTime, 5),     // Minimum 5 seconds
+            roundTime: max(roundTime, 10),
+            restTime: max(restTime, 5),
             numberOfRounds: numberOfRounds
         )
 

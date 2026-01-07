@@ -1,10 +1,3 @@
-//
-//  PunchClockWidgetControl.swift
-//  PunchClockWidget
-//
-//  Created by Frantisek Farkas on 07.01.2026.
-//
-
 import AppIntents
 import SwiftUI
 import WidgetKit
@@ -26,7 +19,7 @@ struct PunchClockWidgetControl: ControlWidget {
             }
         }
         .displayName("Timer")
-        .description("A an example control that runs a timer.")
+        .description("Quick timer control.")
     }
 }
 
@@ -38,12 +31,11 @@ extension PunchClockWidgetControl {
 
     struct Provider: AppIntentControlValueProvider {
         func previewValue(configuration: TimerConfiguration) -> Value {
-            PunchClockWidgetControl.Value(isRunning: false, name: configuration.timerName)
+            Value(isRunning: false, name: configuration.timerName)
         }
 
         func currentValue(configuration: TimerConfiguration) async throws -> Value {
-            let isRunning = true // Check if the timer is running
-            return PunchClockWidgetControl.Value(isRunning: isRunning, name: configuration.timerName)
+            Value(isRunning: true, name: configuration.timerName)
         }
     }
 }
@@ -71,7 +63,6 @@ struct StartTimerIntent: SetValueIntent {
     }
 
     func perform() async throws -> some IntentResult {
-        // Start the timer…
         return .result()
     }
 }

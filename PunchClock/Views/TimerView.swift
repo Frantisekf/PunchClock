@@ -4,7 +4,7 @@ struct TimerView: View {
     @ObservedObject var timerManager: TimerManager
     @Environment(\.colorScheme) var colorScheme
 
-    var phaseColor: Color {
+    private var phaseColor: Color {
         switch timerManager.state.phase {
         case .idle:
             return colorScheme == .dark ? Color.gray.opacity(0.3) : .gray
@@ -28,19 +28,16 @@ struct TimerView: View {
             VStack(spacing: 20) {
                 Spacer()
 
-                // Phase indicator
                 Text(timerManager.state.phaseDisplayName)
                     .font(.system(size: 32, weight: .bold))
                     .foregroundColor(.white.opacity(0.9))
 
-                // Main timer display
                 Text(timerManager.state.formattedTime)
                     .font(.system(size: 120, weight: .bold, design: .monospaced))
                     .foregroundColor(.white)
                     .minimumScaleFactor(0.5)
                     .lineLimit(1)
 
-                // Round progress
                 if let preset = timerManager.currentPreset {
                     RoundProgressView(
                         currentRound: timerManager.state.currentRound,
@@ -52,62 +49,62 @@ struct TimerView: View {
 
                 Spacer()
 
-                // Controls
-                VStack(spacing: 20) {
-                    // Restart Round button (show during prepare, round, or rest)
-                    if timerManager.state.phase == .prepare || 
-                       timerManager.state.phase == .round || 
-                       timerManager.state.phase == .rest {
-                        Button {
-                            timerManager.restartCurrentRound()
-                        } label: {
-                            HStack(spacing: 8) {
-                                Image(systemName: "arrow.counterclockwise")
-                                    .font(.system(size: 18, weight: .semibold))
-                                Text("Restart Round")
-                                    .font(.system(size: 16, weight: .semibold))
-                            }
-                            .foregroundColor(.white)
-                            .padding(.horizontal, 24)
-                            .padding(.vertical, 12)
-                            .background(Color.white.opacity(0.2))
-                            .cornerRadius(25)
-                        }
-                    }
-                    
-                    HStack(spacing: 40) {
-                        // Stop button
-                        Button {
-                            timerManager.stop()
-                        } label: {
-                            Image(systemName: "stop.fill")
-                                .font(.system(size: 30))
-                                .foregroundColor(.white)
-                                .frame(width: 70, height: 70)
-                                .background(Color.white.opacity(0.2))
-                                .clipShape(Circle())
-                        }
-
-                        // Pause/Resume button
-                        if timerManager.state.phase != .finished {
-                            Button {
-                                timerManager.togglePauseResume()
-                            } label: {
-                                Image(systemName: timerManager.state.isRunning ? "pause.fill" : "play.fill")
-                                    .font(.system(size: 40))
-                                    .foregroundColor(.white)
-                                    .frame(width: 90, height: 90)
-                                    .background(Color.white.opacity(0.3))
-                                    .clipShape(Circle())
-                            }
-                        }
-                    }
-                }
-                .padding(.bottom, 50)
+                controlsView
+                    .padding(.bottom, 50)
             }
         }
         .navigationBarHidden(true)
         .statusBar(hidden: true)
+    }
+
+    private var controlsView: some View {
+        VStack(spacing: 20) {
+            if timerManager.state.phase == .prepare ||
+               timerManager.state.phase == .round ||
+               timerManager.state.phase == .rest {
+                Button {
+                    timerManager.restartCurrentRound()
+                } label: {
+                    HStack(spacing: 8) {
+                        Image(systemName: "arrow.counterclockwise")
+                            .font(.system(size: 18, weight: .semibold))
+                        Text("Restart Round")
+                            .font(.system(size: 16, weight: .semibold))
+                    }
+                    .foregroundColor(.white)
+                    .padding(.horizontal, 24)
+                    .padding(.vertical, 12)
+                    .background(Color.white.opacity(0.2))
+                    .cornerRadius(25)
+                }
+            }
+
+            HStack(spacing: 40) {
+                Button {
+                    timerManager.stop()
+                } label: {
+                    Image(systemName: "stop.fill")
+                        .font(.system(size: 30))
+                        .foregroundColor(.white)
+                        .frame(width: 70, height: 70)
+                        .background(Color.white.opacity(0.2))
+                        .clipShape(Circle())
+                }
+
+                if timerManager.state.phase != .finished {
+                    Button {
+                        timerManager.togglePauseResume()
+                    } label: {
+                        Image(systemName: timerManager.state.isRunning ? "pause.fill" : "play.fill")
+                            .font(.system(size: 40))
+                            .foregroundColor(.white)
+                            .frame(width: 90, height: 90)
+                            .background(Color.white.opacity(0.3))
+                            .clipShape(Circle())
+                    }
+                }
+            }
+        }
     }
 }
 
@@ -123,21 +120,15 @@ struct RoundProgressView: View {
                 .fontWeight(.semibold)
                 .foregroundColor(.white)
 
-            // Progress bar
             GeometryReader { geometry in
                 ZStack(alignment: .leading) {
-                    // Background
                     RoundedRectangle(cornerRadius: 10)
                         .fill(Color.white.opacity(0.2))
                         .frame(height: 8)
-                    
-                    // Progress
+
                     RoundedRectangle(cornerRadius: 10)
                         .fill(Color.white)
-                        .frame(
-                            width: geometry.size.width * progressPercentage,
-                            height: 8
-                        )
+                        .frame(width: geometry.size.width * progressPercentage, height: 8)
                 }
             }
             .frame(height: 8)
