@@ -48,4 +48,15 @@ final class PresetStore: ObservableObject {
         presets.remove(atOffsets: offsets)
         savePresets()
     }
+
+    func toggleFavorite(_ preset: Preset) {
+        if let index = presets.firstIndex(where: { $0.id == preset.id }) {
+            presets[index].isFavorite.toggle()
+            savePresets()
+        }
+    }
+
+    var sortedPresets: [Preset] {
+        presets.sorted { $0.isFavorite && !$1.isFavorite }
+    }
 }

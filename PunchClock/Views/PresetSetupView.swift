@@ -10,6 +10,7 @@ struct PresetSetupView: View {
     @State private var roundSeconds: Int
     @State private var restMinutes: Int
     @State private var restSeconds: Int
+    @State private var prepareMinutes: Int
     @State private var prepareSeconds: Int
 
     init(preset: Preset, onStart: @escaping (Preset) -> Void, onCancel: @escaping () -> Void) {
@@ -22,8 +23,11 @@ struct PresetSetupView: View {
         _roundSeconds = State(initialValue: preset.roundTime % 60)
         _restMinutes = State(initialValue: preset.restTime / 60)
         _restSeconds = State(initialValue: preset.restTime % 60)
-        _prepareSeconds = State(initialValue: preset.prepareTime)
+        _prepareMinutes = State(initialValue: preset.prepareTime / 60)
+        _prepareSeconds = State(initialValue: preset.prepareTime % 60)
     }
+
+    private var prepareTime: Int { prepareMinutes * 60 + prepareSeconds }
 
     var body: some View {
         NavigationStack {
@@ -77,7 +81,22 @@ struct PresetSetupView: View {
                 }
 
                 Section {
-                    Stepper("\(prepareSeconds) seconds", value: $prepareSeconds, in: 3...30)
+                    HStack {
+                        Picker("Minutes", selection: $prepareMinutes) {
+                            ForEach(0...2, id: \.self) { minute in
+                                Text("\(minute) min").tag(minute)
+                            }
+                        }
+                        .pickerStyle(.wheel)
+
+                        Picker("Seconds", selection: $prepareSeconds) {
+                            ForEach(Array(stride(from: 0, to: 60, by: 5)), id: \.self) { second in
+                                Text("\(second) sec").tag(second)
+                            }
+                        }
+                        .pickerStyle(.wheel)
+                    }
+                    .frame(height: 120)
                 } header: {
                     Label("Prepare Time", systemImage: "clock.badge.exclamationmark")
                         .foregroundColor(.yellow)
@@ -110,10 +129,11 @@ struct PresetSetupView: View {
                         let adjustedPreset = Preset(
                             id: preset.id,
                             name: preset.name,
-                            prepareTime: prepareSeconds,
+                            prepareTime: max(prepareTime, 5),
                             roundTime: roundMinutes * 60 + roundSeconds,
                             restTime: restMinutes * 60 + restSeconds,
-                            numberOfRounds: rounds
+                            numberOfRounds: rounds,
+                            isFavorite: preset.isFavorite
                         )
                         onStart(adjustedPreset)
                     } label: {
@@ -129,7 +149,7 @@ struct PresetSetupView: View {
     private var totalTimeFormatted: String {
         let roundTime = roundMinutes * 60 + roundSeconds
         let restTime = restMinutes * 60 + restSeconds
-        let total = prepareSeconds + (roundTime * rounds) + (restTime * (rounds - 1))
+        let total = prepareTime + (roundTime * rounds) + (restTime * max(rounds - 1, 0))
 
         let hours = total / 3600
         let minutes = (total % 3600) / 60

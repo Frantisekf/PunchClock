@@ -7,6 +7,7 @@ struct Preset: Identifiable, Codable, Equatable {
     var roundTime: Int
     var restTime: Int
     var numberOfRounds: Int
+    var isFavorite: Bool
 
     init(
         id: UUID = UUID(),
@@ -14,7 +15,8 @@ struct Preset: Identifiable, Codable, Equatable {
         prepareTime: Int,
         roundTime: Int,
         restTime: Int,
-        numberOfRounds: Int
+        numberOfRounds: Int,
+        isFavorite: Bool = false
     ) {
         self.id = id
         self.name = name
@@ -22,6 +24,7 @@ struct Preset: Identifiable, Codable, Equatable {
         self.roundTime = roundTime
         self.restTime = restTime
         self.numberOfRounds = numberOfRounds
+        self.isFavorite = isFavorite
     }
 
     static let boxingStandard = Preset(

@@ -7,7 +7,8 @@ struct PresetEditorView: View {
     let onSave: (Preset) -> Void
 
     @State private var name: String = ""
-    @State private var prepareTime: Int = 10
+    @State private var prepareMinutes: Int = 0
+    @State private var prepareSeconds: Int = 10
     @State private var roundMinutes: Int = 3
     @State private var roundSeconds: Int = 0
     @State private var restMinutes: Int = 1
@@ -15,6 +16,24 @@ struct PresetEditorView: View {
     @State private var numberOfRounds: Int = 12
 
     private var isEditing: Bool { preset != nil }
+
+    private var prepareTime: Int { prepareMinutes * 60 + prepareSeconds }
+    private var roundTime: Int { roundMinutes * 60 + roundSeconds }
+    private var restTime: Int { restMinutes * 60 + restSeconds }
+
+    private var totalWorkoutTime: Int {
+        prepareTime + (roundTime * numberOfRounds) + (restTime * max(numberOfRounds - 1, 0))
+    }
+
+    private var formattedTotalTime: String {
+        let hours = totalWorkoutTime / 3600
+        let minutes = (totalWorkoutTime % 3600) / 60
+        let seconds = totalWorkoutTime % 60
+        if hours > 0 {
+            return String(format: "%d:%02d:%02d", hours, minutes, seconds)
+        }
+        return String(format: "%d:%02d", minutes, seconds)
+    }
 
     var body: some View {
         NavigationStack {
@@ -24,7 +43,7 @@ struct PresetEditorView: View {
                 }
 
                 Section("Rounds") {
-                    Stepper("\(numberOfRounds) rounds", value: $numberOfRounds, in: 1...20)
+                    Stepper("\(numberOfRounds) rounds", value: $numberOfRounds, in: 1...99)
                 }
 
                 Section {
@@ -72,10 +91,35 @@ struct PresetEditorView: View {
                 }
 
                 Section {
-                    Stepper("\(prepareTime) seconds", value: $prepareTime, in: 3...30)
+                    HStack {
+                        Picker("Minutes", selection: $prepareMinutes) {
+                            ForEach(0...2, id: \.self) { minute in
+                                Text("\(minute) min").tag(minute)
+                            }
+                        }
+                        .pickerStyle(.wheel)
+
+                        Picker("Seconds", selection: $prepareSeconds) {
+                            ForEach(Array(stride(from: 0, to: 60, by: 5)), id: \.self) { second in
+                                Text("\(second) sec").tag(second)
+                            }
+                        }
+                        .pickerStyle(.wheel)
+                    }
+                    .frame(height: 120)
                 } header: {
                     Label("Prepare Time", systemImage: "clock.badge.exclamationmark")
                         .foregroundColor(.yellow)
+                }
+
+                Section {
+                    HStack {
+                        Text("Total Workout Time")
+                        Spacer()
+                        Text(formattedTotalTime)
+                            .fontWeight(.semibold)
+                            .foregroundColor(.secondary)
+                    }
                 }
             }
             .navigationTitle(isEditing ? "Edit Preset" : "New Preset")
@@ -93,7 +137,8 @@ struct PresetEditorView: View {
             .onAppear {
                 if let preset = preset {
                     name = preset.name
-                    prepareTime = preset.prepareTime
+                    prepareMinutes = preset.prepareTime / 60
+                    prepareSeconds = preset.prepareTime % 60
                     roundMinutes = preset.roundTime / 60
                     roundSeconds = preset.roundTime % 60
                     restMinutes = preset.restTime / 60
@@ -105,16 +150,14 @@ struct PresetEditorView: View {
     }
 
     private func savePreset() {
-        let roundTime = roundMinutes * 60 + roundSeconds
-        let restTime = restMinutes * 60 + restSeconds
-
         let newPreset = Preset(
             id: preset?.id ?? UUID(),
             name: name,
-            prepareTime: prepareTime,
+            prepareTime: max(prepareTime, 5),
             roundTime: max(roundTime, 10),
             restTime: max(restTime, 5),
-            numberOfRounds: numberOfRounds
+            numberOfRounds: numberOfRounds,
+            isFavorite: preset?.isFavorite ?? false
         )
 
         onSave(newPreset)

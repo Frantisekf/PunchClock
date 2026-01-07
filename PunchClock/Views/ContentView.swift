@@ -28,14 +28,24 @@ struct ContentView: View {
     }
 
     private var presetListView: some View {
-        List {
+        let sortedPresets = presetStore.sortedPresets
+        return List {
             Section {
-                ForEach(Array(presetStore.presets.enumerated()), id: \.element.id) { index, preset in
+                ForEach(Array(sortedPresets.enumerated()), id: \.element.id) { index, preset in
                     PresetRow(preset: preset)
                         .contentShape(Rectangle())
                         .onTapGesture {
                             HapticManager.shared.lightTap()
                             selectedPreset = preset
+                        }
+                        .swipeActions(edge: .leading, allowsFullSwipe: true) {
+                            Button {
+                                HapticManager.shared.lightTap()
+                                presetStore.toggleFavorite(preset)
+                            } label: {
+                                Image(systemName: preset.isFavorite ? "star.slash" : "star.fill")
+                            }
+                            .tint(.yellow)
                         }
                         .swipeActions(edge: .trailing, allowsFullSwipe: false) {
                             Button(role: .destructive) {
@@ -53,7 +63,7 @@ struct ContentView: View {
                             .tint(.blue)
                         }
                         .listRowSeparator(.hidden, edges: .top)
-                        .listRowSeparator(index == presetStore.presets.count - 1 ? .hidden : .visible, edges: .bottom)
+                        .listRowSeparator(index == sortedPresets.count - 1 ? .hidden : .visible, edges: .bottom)
                 }
             } header: {
                 Text("Combat Sports Timer")
@@ -127,15 +137,36 @@ struct ContentView: View {
 struct PresetRow: View {
     let preset: Preset
 
+    private var totalWorkoutTime: Int {
+        preset.prepareTime + (preset.roundTime * preset.numberOfRounds) + (preset.restTime * max(preset.numberOfRounds - 1, 0))
+    }
+
+    private var formattedTotalTime: String {
+        let hours = totalWorkoutTime / 3600
+        let minutes = (totalWorkoutTime % 3600) / 60
+        if hours > 0 {
+            return String(format: "%dh %dm", hours, minutes)
+        }
+        return String(format: "%dm", minutes)
+    }
+
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
-            Text(preset.name)
-                .font(.headline)
+            HStack(spacing: 6) {
+                Text(preset.name)
+                    .font(.headline)
+                if preset.isFavorite {
+                    Image(systemName: "star.fill")
+                        .font(.caption)
+                        .foregroundColor(.yellow)
+                }
+            }
 
-            HStack(spacing: 16) {
+            HStack(spacing: 12) {
                 Label(formatTime(preset.roundTime), systemImage: "timer")
                 Label("\(preset.numberOfRounds) rounds", systemImage: "repeat")
-                Label(formatTime(preset.restTime) + " rest", systemImage: "pause.circle")
+                Label(formatTime(preset.restTime), systemImage: "pause.circle")
+                Label(formattedTotalTime, systemImage: "clock")
             }
             .font(.caption)
             .foregroundColor(.secondary)

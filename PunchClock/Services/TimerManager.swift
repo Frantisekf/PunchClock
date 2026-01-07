@@ -205,6 +205,14 @@ final class TimerManager: ObservableObject {
         transitionToNextPhase(preset: preset)
     }
 
+    func addTime(_ seconds: Int) {
+        state.timeRemaining += seconds
+        if let endTime = phaseEndTime {
+            phaseEndTime = endTime.addingTimeInterval(TimeInterval(seconds))
+        }
+        updateLiveActivity()
+    }
+
     // MARK: - Private Methods
 
     private func syncTimeWithRealTime() {
