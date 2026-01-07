@@ -59,23 +59,44 @@ struct TimerView: View {
 
     private var controlsView: some View {
         VStack(spacing: 20) {
-            if timerManager.state.phase == .prepare ||
-               timerManager.state.phase == .round ||
-               timerManager.state.phase == .rest {
-                Button {
-                    timerManager.restartCurrentRound()
-                } label: {
-                    HStack(spacing: 8) {
-                        Image(systemName: "arrow.counterclockwise")
-                            .font(.system(size: 18, weight: .semibold))
-                        Text("Restart Round")
-                            .font(.system(size: 16, weight: .semibold))
+            HStack(spacing: 16) {
+                if timerManager.state.phase == .prepare ||
+                   timerManager.state.phase == .round ||
+                   timerManager.state.phase == .rest {
+                    Button {
+                        timerManager.restartCurrentRound()
+                    } label: {
+                        HStack(spacing: 6) {
+                            Image(systemName: "arrow.counterclockwise")
+                                .font(.system(size: 16, weight: .semibold))
+                            Text("Restart")
+                                .font(.system(size: 14, weight: .semibold))
+                        }
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 10)
+                        .background(Color.white.opacity(0.2))
+                        .cornerRadius(20)
                     }
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 24)
-                    .padding(.vertical, 12)
-                    .background(Color.white.opacity(0.2))
-                    .cornerRadius(25)
+                }
+
+                if timerManager.state.phase == .prepare ||
+                   timerManager.state.phase == .rest {
+                    Button {
+                        timerManager.skipPhase()
+                    } label: {
+                        HStack(spacing: 6) {
+                            Image(systemName: "forward.fill")
+                                .font(.system(size: 16, weight: .semibold))
+                            Text("Skip")
+                                .font(.system(size: 14, weight: .semibold))
+                        }
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 10)
+                        .background(Color.white.opacity(0.2))
+                        .cornerRadius(20)
+                    }
                 }
             }
 

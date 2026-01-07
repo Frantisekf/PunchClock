@@ -56,11 +56,11 @@ final class SoundManager: ObservableObject {
     private func playSystemSoundFallback(for sound: Sound) {
         switch sound {
         case .bell:
-            AudioServicesPlaySystemSound(1304)
+            AudioServicesPlayAlertSound(1304)
         case .stickPunch:
-            AudioServicesPlaySystemSound(1104)
+            AudioServicesPlayAlertSound(1104)
         case .countdown:
-            AudioServicesPlaySystemSound(1103)
+            AudioServicesPlayAlertSound(1103)
         }
     }
 

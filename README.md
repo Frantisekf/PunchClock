@@ -12,6 +12,8 @@ A combat sports interval timer for iOS with Dynamic Island and Live Activity sup
   - Bell sound at round start/end
   - 10-second warning stick punch during rounds
   - 3-second countdown beeps
+- **Haptic Feedback** - Feel the countdown and phase changes through vibrations
+- **Siri Shortcuts** - Start timers hands-free with voice commands (great when gloved up)
 - **Full-Screen Timer** - Color-coded phases (prepare, round, rest)
 - **Background Support** - Timer continues running when app is backgrounded
 
@@ -26,23 +28,6 @@ A combat sports interval timer for iOS with Dynamic Island and Live Activity sup
 2. Open `PunchClock.xcodeproj` in Xcode
 3. Build and run on your device or simulator
 
-## Sound Files
-
-The app expects the following sound files in the main bundle:
-
-| File | Purpose |
-|------|---------|
-| `bell.wav` | Round start/end bell |
-| `stick_punch.wav` | 10-second warning |
-| `countdown.wav` | Final 3-second beeps |
-
-If sound files are not present, the app falls back to system sounds.
-
-**Recommended sources for royalty-free sounds:**
-- [Freesound.org](https://freesound.org)
-- [Pixabay Sound Effects](https://pixabay.com/sound-effects)
-- [Zapsplat](https://zapsplat.com)
-
 ## Architecture
 
 ```
@@ -54,6 +39,7 @@ PunchClock/
 ├── Services/
 │   ├── TimerManager.swift    # Core timer logic + Live Activity
 │   ├── SoundManager.swift    # Audio playback
+│   ├── SiriIntents.swift     # Siri Shortcuts integration
 │   └── TimerActivityAttributes.swift
 ├── Views/
 │   ├── ContentView.swift     # Main preset list
@@ -82,6 +68,16 @@ PunchClock/
 | Muay Thai | 3:00 | 2:00 | 5 |
 | BJJ Rolling | 6:00 | 1:00 | 5 |
 | Quick Training | 2:00 | 0:30 | 6 |
+
+## Siri Voice Commands
+
+Start timers hands-free using Siri:
+
+- "Hey Siri, start PunchClock"
+- "Hey Siri, start boxing timer with PunchClock"
+- "Hey Siri, start MMA Style with PunchClock"
+
+Shortcuts also appear in the Shortcuts app for custom automations.
 
 ## License
 

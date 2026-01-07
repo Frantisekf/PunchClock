@@ -12,6 +12,9 @@ final class TimerManager: ObservableObject {
     private var backgroundTask: UIBackgroundTaskIdentifier = .invalid
     private var foregroundObserver: NSObjectProtocol?
     private let soundManager = SoundManager.shared
+    private let hapticHeavy = UIImpactFeedbackGenerator(style: .heavy)
+    private let hapticMedium = UIImpactFeedbackGenerator(style: .medium)
+    private let hapticLight = UIImpactFeedbackGenerator(style: .light)
 
     var currentPreset: Preset? { preset }
 
@@ -100,6 +103,12 @@ final class TimerManager: ObservableObject {
         }
 
         updateLiveActivity()
+    }
+
+    func skipPhase() {
+        guard let preset = preset else { return }
+        state.timeRemaining = 0
+        transitionToNextPhase(preset: preset)
     }
 
     // MARK: - Private Methods
@@ -195,19 +204,23 @@ final class TimerManager: ObservableObject {
         case .prepare:
             if state.timeRemaining <= 3 && state.timeRemaining > 0 {
                 soundManager.playCountdown()
+                hapticLight.impactOccurred()
             }
 
         case .round:
             if state.timeRemaining == 10 {
                 soundManager.playStickPunch()
+                hapticMedium.impactOccurred()
             }
             if state.timeRemaining <= 3 && state.timeRemaining > 0 {
                 soundManager.playCountdown()
+                hapticMedium.impactOccurred()
             }
 
         case .rest:
             if state.timeRemaining <= 3 && state.timeRemaining > 0 {
                 soundManager.playCountdown()
+                hapticLight.impactOccurred()
             }
 
         default:
@@ -219,6 +232,7 @@ final class TimerManager: ObservableObject {
         switch state.phase {
         case .prepare:
             soundManager.playBell()
+            hapticHeavy.impactOccurred()
             state.phase = .round
             state.timeRemaining = preset.roundTime
             phaseEndTime = Date().addingTimeInterval(TimeInterval(state.timeRemaining))
@@ -226,6 +240,7 @@ final class TimerManager: ObservableObject {
 
         case .round:
             soundManager.playBell()
+            hapticHeavy.impactOccurred()
 
             if state.currentRound >= preset.numberOfRounds {
                 state.phase = .finished
@@ -244,6 +259,7 @@ final class TimerManager: ObservableObject {
 
         case .rest:
             soundManager.playBell()
+            hapticHeavy.impactOccurred()
             state.currentRound += 1
             state.phase = .round
             state.timeRemaining = preset.roundTime
@@ -282,6 +298,7 @@ final class TimerManager: ObservableObject {
         let contentState = TimerActivityAttributes.ContentState(
             phase: state.phase.rawValue,
             endTime: Date().addingTimeInterval(TimeInterval(state.timeRemaining)),
+            timeRemaining: state.timeRemaining,
             currentRound: state.currentRound,
             totalRounds: preset.numberOfRounds,
             isRunning: state.isRunning
@@ -304,6 +321,7 @@ final class TimerManager: ObservableObject {
         let contentState = TimerActivityAttributes.ContentState(
             phase: state.phase.rawValue,
             endTime: Date().addingTimeInterval(TimeInterval(state.timeRemaining)),
+            timeRemaining: state.timeRemaining,
             currentRound: state.currentRound,
             totalRounds: preset.numberOfRounds,
             isRunning: state.isRunning
@@ -320,6 +338,7 @@ final class TimerManager: ObservableObject {
         let finalContentState = TimerActivityAttributes.ContentState(
             phase: state.phase.rawValue,
             endTime: Date(),
+            timeRemaining: 0,
             currentRound: state.currentRound,
             totalRounds: preset.numberOfRounds,
             isRunning: state.isRunning

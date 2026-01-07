@@ -33,10 +33,17 @@ struct PunchClockWidgetLiveActivity: Widget {
                 }
 
                 DynamicIslandExpandedRegion(.center) {
-                    Text(timerInterval: Date()...context.state.endTime, countsDown: true)
-                        .font(.system(size: 40, weight: .bold, design: .rounded))
-                        .foregroundColor(.white)
-                        .monospacedDigit()
+                    if context.state.isRunning {
+                        Text(timerInterval: Date()...context.state.endTime, countsDown: true)
+                            .font(.system(size: 40, weight: .bold, design: .rounded))
+                            .foregroundColor(.white)
+                            .monospacedDigit()
+                    } else {
+                        Text(formatTime(context.state.timeRemaining))
+                            .font(.system(size: 40, weight: .bold, design: .rounded))
+                            .foregroundColor(.white)
+                            .monospacedDigit()
+                    }
                 }
 
                 DynamicIslandExpandedRegion(.bottom) {
@@ -55,12 +62,20 @@ struct PunchClockWidgetLiveActivity: Widget {
                 Image(systemName: phaseIcon(for: context.state.phase))
                     .foregroundColor(phaseColor(for: context.state.phase))
             } compactTrailing: {
-                Text(context.state.endTime, style: .timer)
-                    .multilineTextAlignment(.trailing)
-                    .monospacedDigit()
-                    .foregroundColor(phaseColor(for: context.state.phase))
-                    .frame(width: 42)
-                    .fixedSize()
+                if context.state.isRunning {
+                    Text(context.state.endTime, style: .timer)
+                        .multilineTextAlignment(.trailing)
+                        .monospacedDigit()
+                        .foregroundColor(phaseColor(for: context.state.phase))
+                        .frame(width: 42)
+                        .fixedSize()
+                } else {
+                    Text(formatTime(context.state.timeRemaining))
+                        .monospacedDigit()
+                        .foregroundColor(.orange)
+                        .frame(width: 42)
+                        .fixedSize()
+                }
             } minimal: {
                 Image(systemName: phaseIcon(for: context.state.phase))
                     .foregroundColor(phaseColor(for: context.state.phase))
@@ -88,11 +103,14 @@ struct PunchClockWidgetLiveActivity: Widget {
             }
 
             HStack(alignment: .firstTextBaseline, spacing: 4) {
-                Text(timerInterval: Date()...context.state.endTime, countsDown: true)
-                    .font(.system(size: 36, weight: .bold, design: .rounded))
-                    .monospacedDigit()
-
-                if !context.state.isRunning {
+                if context.state.isRunning {
+                    Text(timerInterval: Date()...context.state.endTime, countsDown: true)
+                        .font(.system(size: 36, weight: .bold, design: .rounded))
+                        .monospacedDigit()
+                } else {
+                    Text(formatTime(context.state.timeRemaining))
+                        .font(.system(size: 36, weight: .bold, design: .rounded))
+                        .monospacedDigit()
                     Image(systemName: "pause.circle.fill")
                         .foregroundColor(.orange)
                 }
@@ -134,12 +152,18 @@ struct PunchClockWidgetLiveActivity: Widget {
         default: return "Timer"
         }
     }
+
+    private func formatTime(_ seconds: Int) -> String {
+        let mins = seconds / 60
+        let secs = seconds % 60
+        return String(format: "%d:%02d", mins, secs)
+    }
 }
 
 #Preview("Notification", as: .content, using: TimerActivityAttributes(presetName: "Boxing Standard")) {
    PunchClockWidgetLiveActivity()
 } contentStates: {
-    TimerActivityAttributes.ContentState(phase: "prepare", endTime: Date().addingTimeInterval(10), currentRound: 1, totalRounds: 12, isRunning: true)
-    TimerActivityAttributes.ContentState(phase: "round", endTime: Date().addingTimeInterval(180), currentRound: 5, totalRounds: 12, isRunning: true)
-    TimerActivityAttributes.ContentState(phase: "rest", endTime: Date().addingTimeInterval(60), currentRound: 5, totalRounds: 12, isRunning: true)
+    TimerActivityAttributes.ContentState(phase: "prepare", endTime: Date().addingTimeInterval(10), timeRemaining: 10, currentRound: 1, totalRounds: 12, isRunning: true)
+    TimerActivityAttributes.ContentState(phase: "round", endTime: Date().addingTimeInterval(180), timeRemaining: 180, currentRound: 5, totalRounds: 12, isRunning: true)
+    TimerActivityAttributes.ContentState(phase: "rest", endTime: Date().addingTimeInterval(60), timeRemaining: 60, currentRound: 5, totalRounds: 12, isRunning: false)
 }

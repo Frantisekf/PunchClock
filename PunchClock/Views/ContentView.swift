@@ -15,6 +15,14 @@ struct ContentView: View {
                 TimerView(timerManager: timerManager)
             }
         }
+        .onReceive(NotificationCenter.default.publisher(for: .startTimerFromSiri)) { notification in
+            if let presetName = notification.userInfo?["presetName"] as? String,
+               let preset = presetStore.presets.first(where: { $0.name == presetName }) {
+                timerManager.start(with: preset)
+            } else if let firstPreset = presetStore.presets.first {
+                timerManager.start(with: firstPreset)
+            }
+        }
     }
 
     private var presetListView: some View {
@@ -49,7 +57,11 @@ struct ContentView: View {
                     .foregroundColor(.secondary)
                     .textCase(nil)
             } footer: {
-                Text("Tap a preset to configure and start")
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Tap to start, swipe left to edit or delete")
+                    Text("\"Hey Siri, start PunchClock\"")
+                        .italic()
+                }
             }
 
             Section {
