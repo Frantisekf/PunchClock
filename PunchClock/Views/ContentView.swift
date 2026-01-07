@@ -2,9 +2,11 @@ import SwiftUI
 
 struct ContentView: View {
     @EnvironmentObject var presetStore: PresetStore
+    @EnvironmentObject var historyStore: WorkoutHistoryStore
     @StateObject private var timerManager = TimerManager()
     @State private var selectedPreset: Preset?
     @State private var showingPresetEditor = false
+    @State private var showingHistory = false
     @State private var editingPreset: Preset?
 
     var body: some View {
@@ -12,7 +14,7 @@ struct ContentView: View {
             if timerManager.state.phase == .idle {
                 presetListView
             } else {
-                TimerView(timerManager: timerManager)
+                TimerView(timerManager: timerManager, historyStore: historyStore)
             }
         }
         .onReceive(NotificationCenter.default.publisher(for: .startTimerFromSiri)) { notification in
@@ -32,6 +34,7 @@ struct ContentView: View {
                     PresetRow(preset: preset)
                         .contentShape(Rectangle())
                         .onTapGesture {
+                            HapticManager.shared.lightTap()
                             selectedPreset = preset
                         }
                         .swipeActions(edge: .trailing, allowsFullSwipe: false) {
@@ -74,6 +77,13 @@ struct ContentView: View {
         }
         .navigationTitle("Ring Timer")
         .toolbar {
+            ToolbarItem(placement: .navigationBarLeading) {
+                Button {
+                    showingHistory = true
+                } label: {
+                    Image(systemName: "clock.arrow.circlepath")
+                }
+            }
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
                     editingPreset = nil
@@ -82,6 +92,10 @@ struct ContentView: View {
                     Image(systemName: "plus")
                 }
             }
+        }
+        .sheet(isPresented: $showingHistory) {
+            HistoryView()
+                .environmentObject(historyStore)
         }
         .sheet(isPresented: $showingPresetEditor) {
             PresetEditorView(
@@ -233,6 +247,7 @@ struct QuoteView: View {
         .listRowBackground(Color.clear)
         .contentShape(Rectangle())
         .onTapGesture {
+            HapticManager.shared.selection()
             withAnimation(.easeInOut(duration: 0.2)) {
                 currentQuote = Self.quotes.randomElement() ?? Self.quotes[0]
             }
@@ -243,4 +258,5 @@ struct QuoteView: View {
 #Preview {
     ContentView()
         .environmentObject(PresetStore())
+        .environmentObject(WorkoutHistoryStore())
 }

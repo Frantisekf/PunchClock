@@ -4,6 +4,7 @@ import AppIntents
 @main
 struct PunchClockApp: App {
     @StateObject private var presetStore = PresetStore()
+    @StateObject private var historyStore = WorkoutHistoryStore()
 
     init() {
         // Register Siri Shortcuts
@@ -14,6 +15,7 @@ struct PunchClockApp: App {
         WindowGroup {
             ContentView()
                 .environmentObject(presetStore)
+                .environmentObject(historyStore)
         }
     }
 }

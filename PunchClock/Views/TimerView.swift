@@ -2,7 +2,9 @@ import SwiftUI
 
 struct TimerView: View {
     @ObservedObject var timerManager: TimerManager
+    var historyStore: WorkoutHistoryStore
     @Environment(\.colorScheme) var colorScheme
+    @State private var workoutSaved = false
 
     private static let finishQuotes: [(quote: String, author: String)] = [
         ("Good.", "Jocko Willink"),
@@ -53,6 +55,9 @@ struct TimerView: View {
 
             if timerManager.state.phase == .finished {
                 finishedView
+                    .onAppear {
+                        saveWorkoutIfNeeded()
+                    }
             } else {
                 VStack(spacing: 20) {
                     HStack {
@@ -264,8 +269,26 @@ struct RoundProgressView: View {
     }
 }
 
+// MARK: - Private Methods
+
+extension TimerView {
+    private func saveWorkoutIfNeeded() {
+        guard !workoutSaved, let preset = timerManager.currentPreset else { return }
+
+        let record = WorkoutRecord(
+            presetName: preset.name,
+            totalTime: timerManager.totalElapsedTime,
+            roundsCompleted: timerManager.state.currentRound,
+            totalRounds: preset.numberOfRounds
+        )
+
+        historyStore.addRecord(record)
+        workoutSaved = true
+    }
+}
+
 #Preview {
     let manager = TimerManager()
     manager.start(with: .boxingStandard)
-    return TimerView(timerManager: manager)
+    return TimerView(timerManager: manager, historyStore: WorkoutHistoryStore())
 }
