@@ -108,7 +108,8 @@ PunchClock/
 | MMA Style | 5:00 | 1:00 | 5 | ~29m |
 | Muay Thai | 3:00 | 2:00 | 5 | ~23m |
 | BJJ Rolling | 6:00 | 1:00 | 5 | ~34m |
-| Quick Training | 2:00 | 0:30 | 6 | ~14m |
+| Heavy Bag HIIT | 0:30 | 0:30 | 10 | ~10m |
+| Shadowboxing | 2:00 | 0:30 | 3 | ~7m |
 
 ## Siri Voice Commands
 

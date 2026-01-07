@@ -40,12 +40,12 @@ struct Preset: Identifiable, Codable, Equatable {
         numberOfRounds: 5
     )
 
-    static let quickTraining = Preset(
-        name: "Quick Training",
-        prepareTime: 5,
+    static let shadowboxing = Preset(
+        name: "Shadowboxing",
+        prepareTime: 10,
         roundTime: 120,
         restTime: 30,
-        numberOfRounds: 6
+        numberOfRounds: 3
     )
 
     static let bjjRolling = Preset(
@@ -64,11 +64,20 @@ struct Preset: Identifiable, Codable, Equatable {
         numberOfRounds: 5
     )
 
+    static let heavyBagHIIT = Preset(
+        name: "Heavy Bag HIIT",
+        prepareTime: 10,
+        roundTime: 30,
+        restTime: 30,
+        numberOfRounds: 10
+    )
+
     static let defaultPresets: [Preset] = [
         .boxingStandard,
         .mmaStyle,
         .muayThai,
         .bjjRolling,
-        .quickTraining
+        .heavyBagHIIT,
+        .shadowboxing
     ]
 }
