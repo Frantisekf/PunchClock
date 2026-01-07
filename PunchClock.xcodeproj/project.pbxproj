@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		22D467912F0E7F5E00DEC0E8 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22D467902F0E7F5E00DEC0E8 /* WidgetKit.framework */; };
+		22D467932F0E7F5E00DEC0E8 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22D467922F0E7F5E00DEC0E8 /* SwiftUI.framework */; };
+		22D467A42F0E7F5F00DEC0E8 /* PunchClockWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 22D4678E2F0E7F5E00DEC0E8 /* PunchClockWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		22D467522F0E766600DEC0E8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -21,17 +27,61 @@
 			remoteGlobalIDString = 22D467412F0E766400DEC0E8;
 			remoteInfo = PunchClock;
 		};
+		22D467A22F0E7F5F00DEC0E8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 22D4673A2F0E766400DEC0E8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 22D4678D2F0E7F5E00DEC0E8;
+			remoteInfo = PunchClockWidgetExtension;
+		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		22D467A92F0E7F5F00DEC0E8 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				22D467A42F0E7F5F00DEC0E8 /* PunchClockWidgetExtension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		22D467422F0E766400DEC0E8 /* PunchClock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PunchClock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		22D467512F0E766600DEC0E8 /* PunchClockTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PunchClockTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		22D4675B2F0E766600DEC0E8 /* PunchClockUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PunchClockUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		22D4678E2F0E7F5E00DEC0E8 /* PunchClockWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = PunchClockWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		22D467902F0E7F5E00DEC0E8 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		22D467922F0E7F5E00DEC0E8 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		22CC72DC2F0EA481006766EE /* Exceptions for "PunchClock" folder in "PunchClockWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Services/TimerActivityAttributes.swift,
+			);
+			target = 22D4678D2F0E7F5E00DEC0E8 /* PunchClockWidgetExtension */;
+		};
+		22D467A52F0E7F5F00DEC0E8 /* Exceptions for "PunchClockWidget" folder in "PunchClockWidgetExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 22D4678D2F0E7F5E00DEC0E8 /* PunchClockWidgetExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		22D467442F0E766400DEC0E8 /* PunchClock */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				22CC72DC2F0EA481006766EE /* Exceptions for "PunchClock" folder in "PunchClockWidgetExtension" target */,
+			);
 			path = PunchClock;
 			sourceTree = "<group>";
 		};
@@ -43,6 +93,14 @@
 		22D4675E2F0E766600DEC0E8 /* PunchClockUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = PunchClockUITests;
+			sourceTree = "<group>";
+		};
+		22D467942F0E7F5E00DEC0E8 /* PunchClockWidget */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				22D467A52F0E7F5F00DEC0E8 /* Exceptions for "PunchClockWidget" folder in "PunchClockWidgetExtension" target */,
+			);
+			path = PunchClockWidget;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -69,6 +127,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		22D4678B2F0E7F5E00DEC0E8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				22D467932F0E7F5E00DEC0E8 /* SwiftUI.framework in Frameworks */,
+				22D467912F0E7F5E00DEC0E8 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -78,6 +145,8 @@
 				22D467442F0E766400DEC0E8 /* PunchClock */,
 				22D467542F0E766600DEC0E8 /* PunchClockTests */,
 				22D4675E2F0E766600DEC0E8 /* PunchClockUITests */,
+				22D467942F0E7F5E00DEC0E8 /* PunchClockWidget */,
+				22D4678F2F0E7F5E00DEC0E8 /* Frameworks */,
 				22D467432F0E766400DEC0E8 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -88,8 +157,18 @@
 				22D467422F0E766400DEC0E8 /* PunchClock.app */,
 				22D467512F0E766600DEC0E8 /* PunchClockTests.xctest */,
 				22D4675B2F0E766600DEC0E8 /* PunchClockUITests.xctest */,
+				22D4678E2F0E7F5E00DEC0E8 /* PunchClockWidgetExtension.appex */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		22D4678F2F0E7F5E00DEC0E8 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				22D467902F0E7F5E00DEC0E8 /* WidgetKit.framework */,
+				22D467922F0E7F5E00DEC0E8 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -102,10 +181,12 @@
 				22D4673E2F0E766400DEC0E8 /* Sources */,
 				22D4673F2F0E766400DEC0E8 /* Frameworks */,
 				22D467402F0E766400DEC0E8 /* Resources */,
+				22D467A92F0E7F5F00DEC0E8 /* Embed Foundation Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				22D467A32F0E7F5F00DEC0E8 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				22D467442F0E766400DEC0E8 /* PunchClock */,
@@ -163,6 +244,28 @@
 			productReference = 22D4675B2F0E766600DEC0E8 /* PunchClockUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
+		22D4678D2F0E7F5E00DEC0E8 /* PunchClockWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 22D467A62F0E7F5F00DEC0E8 /* Build configuration list for PBXNativeTarget "PunchClockWidgetExtension" */;
+			buildPhases = (
+				22D4678A2F0E7F5E00DEC0E8 /* Sources */,
+				22D4678B2F0E7F5E00DEC0E8 /* Frameworks */,
+				22D4678C2F0E7F5E00DEC0E8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				22D467942F0E7F5E00DEC0E8 /* PunchClockWidget */,
+			);
+			name = PunchClockWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = PunchClockWidgetExtension;
+			productReference = 22D4678E2F0E7F5E00DEC0E8 /* PunchClockWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -184,6 +287,9 @@
 						CreatedOnToolsVersion = 26.2;
 						TestTargetID = 22D467412F0E766400DEC0E8;
 					};
+					22D4678D2F0E7F5E00DEC0E8 = {
+						CreatedOnToolsVersion = 26.2;
+					};
 				};
 			};
 			buildConfigurationList = 22D4673D2F0E766400DEC0E8 /* Build configuration list for PBXProject "PunchClock" */;
@@ -203,6 +309,7 @@
 				22D467412F0E766400DEC0E8 /* PunchClock */,
 				22D467502F0E766600DEC0E8 /* PunchClockTests */,
 				22D4675A2F0E766600DEC0E8 /* PunchClockUITests */,
+				22D4678D2F0E7F5E00DEC0E8 /* PunchClockWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -223,6 +330,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		22D467592F0E766600DEC0E8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		22D4678C2F0E7F5E00DEC0E8 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -253,6 +367,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		22D4678A2F0E7F5E00DEC0E8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -265,6 +386,11 @@
 			isa = PBXTargetDependency;
 			target = 22D467412F0E766400DEC0E8 /* PunchClock */;
 			targetProxy = 22D4675C2F0E766600DEC0E8 /* PBXContainerItemProxy */;
+		};
+		22D467A32F0E7F5F00DEC0E8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 22D4678D2F0E7F5E00DEC0E8 /* PunchClockWidgetExtension */;
+			targetProxy = 22D467A22F0E7F5F00DEC0E8 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -394,6 +520,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -436,6 +563,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSSupportsLiveActivities = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphonesimulator*]" = YES;
 				"INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents[sdk=iphoneos*]" = YES;
@@ -565,6 +693,69 @@
 			};
 			name = Release;
 		};
+		22D467A72F0E7F5F00DEC0E8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PunchClockWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = PunchClockWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.frantisekfarkas.PunchClock.PunchClockWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		22D467A82F0E7F5F00DEC0E8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = PunchClockWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = PunchClockWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 26.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.frantisekfarkas.PunchClock.PunchClockWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -600,6 +791,15 @@
 			buildConfigurations = (
 				22D4676C2F0E766600DEC0E8 /* Debug */,
 				22D4676D2F0E766600DEC0E8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		22D467A62F0E7F5F00DEC0E8 /* Build configuration list for PBXNativeTarget "PunchClockWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				22D467A72F0E7F5F00DEC0E8 /* Debug */,
+				22D467A82F0E7F5F00DEC0E8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
