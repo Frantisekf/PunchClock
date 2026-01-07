@@ -34,7 +34,7 @@ struct PunchClockWidgetLiveActivity: Widget {
 
                 DynamicIslandExpandedRegion(.center) {
                     if context.state.isRunning {
-                        Text(timerInterval: Date()...context.state.endTime, countsDown: true)
+                        Text(context.state.endTime, style: .timer)
                             .font(.system(size: 40, weight: .bold, design: .rounded))
                             .foregroundColor(.white)
                             .monospacedDigit()
@@ -104,7 +104,7 @@ struct PunchClockWidgetLiveActivity: Widget {
 
             HStack(alignment: .firstTextBaseline, spacing: 4) {
                 if context.state.isRunning {
-                    Text(timerInterval: Date()...context.state.endTime, countsDown: true)
+                    Text(context.state.endTime, style: .timer)
                         .font(.system(size: 36, weight: .bold, design: .rounded))
                         .monospacedDigit()
                 } else {

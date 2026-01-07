@@ -2,6 +2,7 @@ import Foundation
 import Combine
 import ActivityKit
 import UIKit
+import UserNotifications
 
 final class TimerManager: ObservableObject {
     @Published var state = TimerState()
@@ -14,6 +15,7 @@ final class TimerManager: ObservableObject {
     private var startTime: Date?
     private var backgroundTask: UIBackgroundTaskIdentifier = .invalid
     private var foregroundObserver: NSObjectProtocol?
+    private var backgroundObserver: NSObjectProtocol?
     private let soundManager = SoundManager.shared
     private let hapticHeavy = UIImpactFeedbackGenerator(style: .heavy)
     private let hapticMedium = UIImpactFeedbackGenerator(style: .medium)
@@ -22,13 +24,28 @@ final class TimerManager: ObservableObject {
     var currentPreset: Preset? { preset }
 
     init() {
+        requestNotificationPermission()
+
         foregroundObserver = NotificationCenter.default.addObserver(
             forName: UIApplication.willEnterForegroundNotification,
             object: nil,
             queue: .main
         ) { [weak self] _ in
             self?.syncTimeWithRealTime()
+            self?.cancelScheduledNotifications()
         }
+
+        backgroundObserver = NotificationCenter.default.addObserver(
+            forName: UIApplication.didEnterBackgroundNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            self?.schedulePhaseNotifications()
+        }
+    }
+
+    private func requestNotificationPermission() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { _, _ in }
     }
 
     deinit {
@@ -37,6 +54,74 @@ final class TimerManager: ObservableObject {
         if let observer = foregroundObserver {
             NotificationCenter.default.removeObserver(observer)
         }
+        if let observer = backgroundObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
+    }
+
+    // MARK: - Background Notifications
+
+    private func schedulePhaseNotifications() {
+        guard state.isRunning, let preset = preset, !isMuted else { return }
+
+        cancelScheduledNotifications()
+
+        var timeOffset: TimeInterval = TimeInterval(state.timeRemaining)
+        var currentRound = state.currentRound
+        var currentPhase = state.phase
+
+        // Schedule notifications for all upcoming phase transitions
+        while currentPhase != .finished {
+            switch currentPhase {
+            case .prepare:
+                scheduleNotification(at: timeOffset, title: "Round \(currentRound)", body: "Fight!", sound: "bell.mp3")
+                currentPhase = .round
+                timeOffset += TimeInterval(preset.roundTime)
+
+            case .round:
+                if currentRound >= preset.numberOfRounds {
+                    scheduleNotification(at: timeOffset, title: "Workout Complete!", body: "Great job!", sound: "bell.mp3")
+                    currentPhase = .finished
+                } else {
+                    scheduleNotification(at: timeOffset, title: "Rest", body: "Round \(currentRound) complete", sound: "bell.mp3")
+                    currentPhase = .rest
+                    timeOffset += TimeInterval(preset.restTime)
+                }
+
+            case .rest:
+                currentRound += 1
+                scheduleNotification(at: timeOffset, title: "Round \(currentRound)", body: "Fight!", sound: "bell.mp3")
+                currentPhase = .round
+                timeOffset += TimeInterval(preset.roundTime)
+
+            default:
+                break
+            }
+
+            // Limit to prevent too many notifications
+            if timeOffset > 3600 { break }
+        }
+    }
+
+    private func scheduleNotification(at timeInterval: TimeInterval, title: String, body: String, sound: String) {
+        let content = UNMutableNotificationContent()
+        content.title = title
+        content.body = body
+        content.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: sound))
+        content.interruptionLevel = .timeSensitive
+
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: max(timeInterval, 1), repeats: false)
+        let request = UNNotificationRequest(
+            identifier: "timer-\(UUID().uuidString)",
+            content: content,
+            trigger: trigger
+        )
+
+        UNUserNotificationCenter.current().add(request)
+    }
+
+    private func cancelScheduledNotifications() {
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
     }
 
     func start(with preset: Preset) {
@@ -50,6 +135,7 @@ final class TimerManager: ObservableObject {
         phaseEndTime = Date().addingTimeInterval(TimeInterval(state.timeRemaining))
 
         soundManager.setupAudioSession()
+        soundManager.startBackgroundAudio()
         startTimer()
         startLiveActivity(preset: preset)
     }
@@ -59,6 +145,7 @@ final class TimerManager: ObservableObject {
         timer?.invalidate()
         timer = nil
         phaseEndTime = nil
+        cancelScheduledNotifications()
         updateLiveActivity()
     }
 
@@ -75,6 +162,8 @@ final class TimerManager: ObservableObject {
         timer = nil
         phaseEndTime = nil
         state = TimerState()
+        cancelScheduledNotifications()
+        soundManager.stopBackgroundAudio()
         endLiveActivity()
         endBackgroundTask()
     }
@@ -266,6 +355,7 @@ final class TimerManager: ObservableObject {
                 }
                 timer?.invalidate()
                 timer = nil
+                soundManager.stopBackgroundAudio()
                 endBackgroundTask()
                 endLiveActivity()
             } else {

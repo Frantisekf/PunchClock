@@ -74,13 +74,16 @@ struct PunchClockShortcuts: AppShortcutsProvider {
         AppShortcut(
             intent: StartTimerShortcut(),
             phrases: [
-                "Start \(.applicationName)",
-                "Start \(.applicationName) timer",
-                "Start boxing timer with \(.applicationName)",
+                "Start boxing with \(.applicationName)",
+                "Start round timer in \(.applicationName)",
                 "Start \(\.$presetName) with \(.applicationName)",
-                "Begin \(\.$presetName) timer in \(.applicationName)"
+                "Start \(\.$presetName) in \(.applicationName)",
+                "Start \(\.$presetName) round in \(.applicationName)",
+                "Begin \(\.$presetName) with \(.applicationName)",
+                "Start sparring with \(.applicationName)",
+                "Start rounds in \(.applicationName)"
             ],
-            shortTitle: "Start Timer",
+            shortTitle: "Start Rounds",
             systemImageName: "timer"
         )
     }

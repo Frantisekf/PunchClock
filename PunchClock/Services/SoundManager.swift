@@ -7,6 +7,7 @@ final class SoundManager: ObservableObject {
 
     private var audioPlayers: [String: AVAudioPlayer] = [:]
     private var audioSession: AVAudioSession?
+    private var silentPlayer: AVAudioPlayer?
 
     enum Sound: String {
         case bell = "bell"
@@ -22,11 +23,25 @@ final class SoundManager: ObservableObject {
     func setupAudioSession() {
         do {
             audioSession = AVAudioSession.sharedInstance()
-            try audioSession?.setCategory(.playback, mode: .default, options: [.mixWithOthers, .duckOthers])
-            try audioSession?.setActive(true)
+            // Use .playAndRecord with defaultToSpeaker for more reliable background audio
+            try audioSession?.setCategory(
+                .playback,
+                mode: .default,
+                options: [.mixWithOthers, .duckOthers]
+            )
+            try audioSession?.setActive(true, options: .notifyOthersOnDeactivation)
         } catch {
-            // Audio session setup failed
+            print("Audio session setup failed: \(error)")
         }
+    }
+
+    func startBackgroundAudio() {
+        // Ensure audio session is active for background playback
+        setupAudioSession()
+    }
+
+    func stopBackgroundAudio() {
+        // Keep audio session active for future sounds
     }
 
     private func preloadSounds() {

@@ -58,10 +58,12 @@ struct ContentView: View {
                     .fontWeight(.regular)
                     .foregroundColor(.secondary)
                     .textCase(nil)
+                    .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+                    .padding(.bottom, 8)
             } footer: {
                 VStack(alignment: .leading, spacing: 4) {
                     Text("Tap to start, swipe left to edit or delete")
-                    Text("\"Hey Siri, start Boxing Standard with PunchClock\"")
+                    Text("\"Hey Siri, start Boxing Standard in Ring Timer\"")
                         .italic()
                 }
             }
@@ -70,7 +72,7 @@ struct ContentView: View {
                 QuoteView()
             }
         }
-        .navigationTitle("PunchClock")
+        .navigationTitle("Ring Timer")
         .toolbar {
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
