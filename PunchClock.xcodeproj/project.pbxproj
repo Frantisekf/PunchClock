@@ -7,12 +7,34 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2248D0C62F0FCE4A0090E930 /* PunchClockWatch Watch App.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = 2248D0C52F0FCE4A0090E930 /* PunchClockWatch Watch App.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		22D467912F0E7F5E00DEC0E8 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22D467902F0E7F5E00DEC0E8 /* WidgetKit.framework */; };
 		22D467932F0E7F5E00DEC0E8 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 22D467922F0E7F5E00DEC0E8 /* SwiftUI.framework */; };
 		22D467A42F0E7F5F00DEC0E8 /* PunchClockWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 22D4678E2F0E7F5E00DEC0E8 /* PunchClockWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		2248D0C72F0FCE4A0090E930 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 22D4673A2F0E766400DEC0E8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2248D0C42F0FCE4A0090E930;
+			remoteInfo = "PunchClockWatch Watch App";
+		};
+		2248D0D52F0FCE4C0090E930 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 22D4673A2F0E766400DEC0E8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2248D0C42F0FCE4A0090E930;
+			remoteInfo = "PunchClockWatch Watch App";
+		};
+		2248D0DF2F0FCE4C0090E930 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 22D4673A2F0E766400DEC0E8 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2248D0C42F0FCE4A0090E930;
+			remoteInfo = "PunchClockWatch Watch App";
+		};
 		22D467522F0E766600DEC0E8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 22D4673A2F0E766400DEC0E8 /* Project object */;
@@ -37,6 +59,17 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		2248D0E92F0FCE4C0090E930 /* Embed Watch Content */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "$(CONTENTS_FOLDER_PATH)/Watch";
+			dstSubfolderSpec = 16;
+			files = (
+				2248D0C62F0FCE4A0090E930 /* PunchClockWatch Watch App.app in Embed Watch Content */,
+			);
+			name = "Embed Watch Content";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		22D467A92F0E7F5F00DEC0E8 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -51,6 +84,10 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		2248D0C02F0FCE4A0090E930 /* PunchClockWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PunchClockWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2248D0C52F0FCE4A0090E930 /* PunchClockWatch Watch App.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "PunchClockWatch Watch App.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2248D0D42F0FCE4C0090E930 /* PunchClockWatch Watch AppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "PunchClockWatch Watch AppTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2248D0DE2F0FCE4C0090E930 /* PunchClockWatch Watch AppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "PunchClockWatch Watch AppUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		22D467422F0E766400DEC0E8 /* PunchClock.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PunchClock.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		22D467512F0E766600DEC0E8 /* PunchClockTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PunchClockTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		22D4675B2F0E766600DEC0E8 /* PunchClockUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PunchClockUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -77,6 +114,21 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		2248D0C92F0FCE4A0090E930 /* PunchClockWatch Watch App */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "PunchClockWatch Watch App";
+			sourceTree = "<group>";
+		};
+		2248D0D72F0FCE4C0090E930 /* PunchClockWatch Watch AppTests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "PunchClockWatch Watch AppTests";
+			sourceTree = "<group>";
+		};
+		2248D0E12F0FCE4C0090E930 /* PunchClockWatch Watch AppUITests */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = "PunchClockWatch Watch AppUITests";
+			sourceTree = "<group>";
+		};
 		22D467442F0E766400DEC0E8 /* PunchClock */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -106,6 +158,27 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		2248D0C22F0FCE4A0090E930 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2248D0D12F0FCE4C0090E930 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2248D0DB2F0FCE4C0090E930 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		22D4673F2F0E766400DEC0E8 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -146,6 +219,9 @@
 				22D467542F0E766600DEC0E8 /* PunchClockTests */,
 				22D4675E2F0E766600DEC0E8 /* PunchClockUITests */,
 				22D467942F0E7F5E00DEC0E8 /* PunchClockWidget */,
+				2248D0C92F0FCE4A0090E930 /* PunchClockWatch Watch App */,
+				2248D0D72F0FCE4C0090E930 /* PunchClockWatch Watch AppTests */,
+				2248D0E12F0FCE4C0090E930 /* PunchClockWatch Watch AppUITests */,
 				22D4678F2F0E7F5E00DEC0E8 /* Frameworks */,
 				22D467432F0E766400DEC0E8 /* Products */,
 			);
@@ -158,6 +234,10 @@
 				22D467512F0E766600DEC0E8 /* PunchClockTests.xctest */,
 				22D4675B2F0E766600DEC0E8 /* PunchClockUITests.xctest */,
 				22D4678E2F0E7F5E00DEC0E8 /* PunchClockWidgetExtension.appex */,
+				2248D0C02F0FCE4A0090E930 /* PunchClockWatch.app */,
+				2248D0C52F0FCE4A0090E930 /* PunchClockWatch Watch App.app */,
+				2248D0D42F0FCE4C0090E930 /* PunchClockWatch Watch AppTests.xctest */,
+				2248D0DE2F0FCE4C0090E930 /* PunchClockWatch Watch AppUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -174,6 +254,93 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		2248D0BF2F0FCE4A0090E930 /* PunchClockWatch */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2248D0EA2F0FCE4C0090E930 /* Build configuration list for PBXNativeTarget "PunchClockWatch" */;
+			buildPhases = (
+				2248D0BE2F0FCE4A0090E930 /* Resources */,
+				2248D0E92F0FCE4C0090E930 /* Embed Watch Content */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2248D0C82F0FCE4A0090E930 /* PBXTargetDependency */,
+			);
+			name = PunchClockWatch;
+			packageProductDependencies = (
+			);
+			productName = PunchClockWatch;
+			productReference = 2248D0C02F0FCE4A0090E930 /* PunchClockWatch.app */;
+			productType = "com.apple.product-type.application.watchapp2-container";
+		};
+		2248D0C42F0FCE4A0090E930 /* PunchClockWatch Watch App */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2248D0E62F0FCE4C0090E930 /* Build configuration list for PBXNativeTarget "PunchClockWatch Watch App" */;
+			buildPhases = (
+				2248D0C12F0FCE4A0090E930 /* Sources */,
+				2248D0C22F0FCE4A0090E930 /* Frameworks */,
+				2248D0C32F0FCE4A0090E930 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				2248D0C92F0FCE4A0090E930 /* PunchClockWatch Watch App */,
+			);
+			name = "PunchClockWatch Watch App";
+			packageProductDependencies = (
+			);
+			productName = "PunchClockWatch Watch App";
+			productReference = 2248D0C52F0FCE4A0090E930 /* PunchClockWatch Watch App.app */;
+			productType = "com.apple.product-type.application";
+		};
+		2248D0D32F0FCE4C0090E930 /* PunchClockWatch Watch AppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2248D0ED2F0FCE4C0090E930 /* Build configuration list for PBXNativeTarget "PunchClockWatch Watch AppTests" */;
+			buildPhases = (
+				2248D0D02F0FCE4C0090E930 /* Sources */,
+				2248D0D12F0FCE4C0090E930 /* Frameworks */,
+				2248D0D22F0FCE4C0090E930 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2248D0D62F0FCE4C0090E930 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				2248D0D72F0FCE4C0090E930 /* PunchClockWatch Watch AppTests */,
+			);
+			name = "PunchClockWatch Watch AppTests";
+			packageProductDependencies = (
+			);
+			productName = "PunchClockWatch Watch AppTests";
+			productReference = 2248D0D42F0FCE4C0090E930 /* PunchClockWatch Watch AppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		2248D0DD2F0FCE4C0090E930 /* PunchClockWatch Watch AppUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2248D0F02F0FCE4C0090E930 /* Build configuration list for PBXNativeTarget "PunchClockWatch Watch AppUITests" */;
+			buildPhases = (
+				2248D0DA2F0FCE4C0090E930 /* Sources */,
+				2248D0DB2F0FCE4C0090E930 /* Frameworks */,
+				2248D0DC2F0FCE4C0090E930 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				2248D0E02F0FCE4C0090E930 /* PBXTargetDependency */,
+			);
+			fileSystemSynchronizedGroups = (
+				2248D0E12F0FCE4C0090E930 /* PunchClockWatch Watch AppUITests */,
+			);
+			name = "PunchClockWatch Watch AppUITests";
+			packageProductDependencies = (
+			);
+			productName = "PunchClockWatch Watch AppUITests";
+			productReference = 2248D0DE2F0FCE4C0090E930 /* PunchClockWatch Watch AppUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		22D467412F0E766400DEC0E8 /* PunchClock */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 22D467652F0E766600DEC0E8 /* Build configuration list for PBXNativeTarget "PunchClock" */;
@@ -276,6 +443,20 @@
 				LastSwiftUpdateCheck = 2620;
 				LastUpgradeCheck = 2620;
 				TargetAttributes = {
+					2248D0BF2F0FCE4A0090E930 = {
+						CreatedOnToolsVersion = 26.2;
+					};
+					2248D0C42F0FCE4A0090E930 = {
+						CreatedOnToolsVersion = 26.2;
+					};
+					2248D0D32F0FCE4C0090E930 = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = 2248D0C42F0FCE4A0090E930;
+					};
+					2248D0DD2F0FCE4C0090E930 = {
+						CreatedOnToolsVersion = 26.2;
+						TestTargetID = 2248D0C42F0FCE4A0090E930;
+					};
 					22D467412F0E766400DEC0E8 = {
 						CreatedOnToolsVersion = 26.2;
 					};
@@ -310,11 +491,43 @@
 				22D467502F0E766600DEC0E8 /* PunchClockTests */,
 				22D4675A2F0E766600DEC0E8 /* PunchClockUITests */,
 				22D4678D2F0E7F5E00DEC0E8 /* PunchClockWidgetExtension */,
+				2248D0BF2F0FCE4A0090E930 /* PunchClockWatch */,
+				2248D0C42F0FCE4A0090E930 /* PunchClockWatch Watch App */,
+				2248D0D32F0FCE4C0090E930 /* PunchClockWatch Watch AppTests */,
+				2248D0DD2F0FCE4C0090E930 /* PunchClockWatch Watch AppUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		2248D0BE2F0FCE4A0090E930 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2248D0C32F0FCE4A0090E930 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2248D0D22F0FCE4C0090E930 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2248D0DC2F0FCE4C0090E930 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		22D467402F0E766400DEC0E8 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -346,6 +559,27 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		2248D0C12F0FCE4A0090E930 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2248D0D02F0FCE4C0090E930 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		2248D0DA2F0FCE4C0090E930 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		22D4673E2F0E766400DEC0E8 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -377,6 +611,21 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		2248D0C82F0FCE4A0090E930 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2248D0C42F0FCE4A0090E930 /* PunchClockWatch Watch App */;
+			targetProxy = 2248D0C72F0FCE4A0090E930 /* PBXContainerItemProxy */;
+		};
+		2248D0D62F0FCE4C0090E930 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2248D0C42F0FCE4A0090E930 /* PunchClockWatch Watch App */;
+			targetProxy = 2248D0D52F0FCE4C0090E930 /* PBXContainerItemProxy */;
+		};
+		2248D0E02F0FCE4C0090E930 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2248D0C42F0FCE4A0090E930 /* PunchClockWatch Watch App */;
+			targetProxy = 2248D0DF2F0FCE4C0090E930 /* PBXContainerItemProxy */;
+		};
 		22D467532F0E766600DEC0E8 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 22D467412F0E766400DEC0E8 /* PunchClock */;
@@ -395,6 +644,202 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
+		2248D0E72F0FCE4C0090E930 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "PunchClockWatch Watch App/PunchClockWatch Watch App.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = ADYRX8482X;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = PunchClockWatch;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKWatchOnly = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.frantisekfarkas.PunchClockWatch.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				WATCHOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Debug;
+		};
+		2248D0E82F0FCE4C0090E930 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "PunchClockWatch Watch App/PunchClockWatch Watch App.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = ADYRX8482X;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = PunchClockWatch;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
+				INFOPLIST_KEY_WKWatchOnly = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.frantisekfarkas.PunchClockWatch.watchkitapp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Release;
+		};
+		2248D0EB2F0FCE4C0090E930 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = ADYRX8482X;
+				INFOPLIST_KEY_CFBundleDisplayName = PunchClockWatch;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.frantisekfarkas.PunchClockWatch;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		2248D0EC2F0FCE4C0090E930 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = ADYRX8482X;
+				INFOPLIST_KEY_CFBundleDisplayName = PunchClockWatch;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.frantisekfarkas.PunchClockWatch;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		2248D0EE2F0FCE4C0090E930 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = ADYRX8482X;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.frantisekfarkas.PunchClockWatch-Watch-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PunchClockWatch Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PunchClockWatch Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Debug;
+		};
+		2248D0EF2F0FCE4C0090E930 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = ADYRX8482X;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.frantisekfarkas.PunchClockWatch-Watch-AppTests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/PunchClockWatch Watch App.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/PunchClockWatch Watch App";
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Release;
+		};
+		2248D0F12F0FCE4C0090E930 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = ADYRX8482X;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.frantisekfarkas.PunchClockWatch-Watch-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "PunchClockWatch Watch App";
+				WATCHOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Debug;
+		};
+		2248D0F22F0FCE4C0090E930 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = ADYRX8482X;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.frantisekfarkas.PunchClockWatch-Watch-AppUITests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = watchos;
+				STRING_CATALOG_GENERATE_SYMBOLS = NO;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 4;
+				TEST_TARGET_NAME = "PunchClockWatch Watch App";
+				VALIDATE_PRODUCT = YES;
+				WATCHOS_DEPLOYMENT_TARGET = 9.0;
+			};
+			name = Release;
+		};
 		22D467632F0E766600DEC0E8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -514,6 +959,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = PunchClock/PunchClock.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = ADYRX8482X;
@@ -560,6 +1006,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = PunchClock/PunchClock.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = ADYRX8482X;
@@ -767,6 +1214,42 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		2248D0E62F0FCE4C0090E930 /* Build configuration list for PBXNativeTarget "PunchClockWatch Watch App" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2248D0E72F0FCE4C0090E930 /* Debug */,
+				2248D0E82F0FCE4C0090E930 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2248D0EA2F0FCE4C0090E930 /* Build configuration list for PBXNativeTarget "PunchClockWatch" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2248D0EB2F0FCE4C0090E930 /* Debug */,
+				2248D0EC2F0FCE4C0090E930 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2248D0ED2F0FCE4C0090E930 /* Build configuration list for PBXNativeTarget "PunchClockWatch Watch AppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2248D0EE2F0FCE4C0090E930 /* Debug */,
+				2248D0EF2F0FCE4C0090E930 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		2248D0F02F0FCE4C0090E930 /* Build configuration list for PBXNativeTarget "PunchClockWatch Watch AppUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2248D0F12F0FCE4C0090E930 /* Debug */,
+				2248D0F22F0FCE4C0090E930 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		22D4673D2F0E766400DEC0E8 /* Build configuration list for PBXProject "PunchClock" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
