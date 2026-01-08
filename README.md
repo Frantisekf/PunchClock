@@ -1,6 +1,6 @@
 # Ring Timer
 
-A no-nonsense combat sports interval timer for iOS with Dynamic Island and Live Activity support.
+A no-nonsense combat sports interval timer for iOS and Apple Watch with Dynamic Island and Live Activity support.
 
 **No ads. No subscriptions. One-time lifetime purchase.**
 
@@ -10,16 +10,17 @@ A no-nonsense combat sports interval timer for iOS with Dynamic Island and Live 
 Health & Fitness
 
 ### Keywords
-boxing timer, mma timer, muay thai timer, bjj timer, hiit timer, interval timer, round timer, workout timer, combat sports, martial arts, kickboxing, sparring timer, training timer, fitness timer, tabata
+boxing timer, mma timer, muay thai timer, bjj timer, hiit timer, interval timer, round timer, workout timer, combat sports, martial arts, kickboxing, sparring timer, training timer, fitness timer, tabata, apple watch
 
 ### Short Description
-Professional interval timer for boxing, MMA, BJJ, Muay Thai, and HIIT workouts. Dynamic Island support. No ads.
+Professional interval timer for boxing, MMA, BJJ, Muay Thai, and HIIT workouts. Apple Watch + Dynamic Island support. No ads.
 
 ### Full Description
 Ring Timer is the ultimate interval timer built for fighters and athletes. Whether you're boxing, rolling BJJ, doing Muay Thai rounds, or crushing a HIIT session - this timer keeps you focused on training, not fumbling with your phone.
 
 **Why Ring Timer?**
 - Start your timer and forget about your phone
+- Apple Watch app for wrist-based training
 - Dynamic Island shows your countdown while multitasking
 - Lock screen Live Activity keeps you informed
 - Hands-free Siri voice commands (perfect when gloved up)
@@ -40,22 +41,30 @@ Built entirely with Apple frameworks. No third-party tracking, no analytics, no 
 
 ## Features
 
+### iPhone
 - **Customizable Presets** - Create, edit, and save your own timer configurations
-- **Built-in Presets** - Boxing, MMA, Muay Thai, BJJ Rolling, and Quick Training
+- **Built-in Presets** - Boxing, MMA, Muay Thai, BJJ Rolling, Heavy Bag HIIT, and Shadowboxing
 - **Dynamic Island** - Real-time countdown visible while multitasking
 - **Live Activity** - Lock screen widget shows current phase and round
 - **Workout History** - Track your completed sessions with stats
 - **Audio Cues** - Bell sound at round start/end, countdown beeps
 - **Haptic Feedback** - Feel the countdown and phase changes
 - **Mute Mode** - Silence sounds and haptics when needed
-- **Background Notifications** - Get alerted even when app is backgrounded
 - **Full-Screen Timer** - Color-coded phases (yellow prepare, red round, green rest)
 - **Skip & +20s** - Skip prepare/rest phases or add extra rest time
 - **Motivational Quotes** - Fighter quotes, Jocko Willink, David Goggins, Stoic philosophy
 
+### Apple Watch
+- **Standalone App** - Works independently without iPhone
+- **Full-Screen Colors** - Instantly see your phase from any angle
+- **Distinct Haptics** - Double-tap for round start, triple-tap for round end
+- **HealthKit Integration** - Workouts save to Apple Fitness with heart rate
+- **Simple Controls** - Stop, pause/resume, and skip buttons
+
 ## Requirements
 
 - iOS 16.2+
+- watchOS 9.0+
 - Xcode 15+
 
 ## Installation
@@ -79,7 +88,6 @@ PunchClock/
 │   ├── TimerManager.swift     # Core timer logic + Live Activity
 │   ├── SoundManager.swift     # Audio playback
 │   ├── HapticManager.swift    # Haptic feedback
-│   ├── SiriIntents.swift      # Siri Shortcuts integration
 │   └── TimerActivityAttributes.swift
 ├── Views/
 │   ├── ContentView.swift      # Main preset list
@@ -87,8 +95,13 @@ PunchClock/
 │   ├── PresetEditorView.swift # Create/edit presets
 │   ├── TimerView.swift        # Active timer display
 │   └── HistoryView.swift      # Workout history
-└── PunchClockWidget/
-    └── PunchClockWidgetLiveActivity.swift
+├── PunchClockWidget/
+│   └── PunchClockWidgetLiveActivity.swift
+└── PunchClockWatch Watch App/
+    ├── WatchPreset.swift
+    ├── WatchTimerManager.swift
+    ├── WatchHealthKitManager.swift
+    └── WatchTimerView.swift
 ```
 
 ## Timer Phases
@@ -131,8 +144,8 @@ Start timers hands-free (great when gloved up):
 | WidgetKit | Widget extension |
 | AppIntents | Siri Shortcuts |
 | AVFoundation | Audio playback |
-| UserNotifications | Background alerts |
-| CoreHaptics | Haptic capability check |
+| HealthKit | Apple Watch workout tracking |
+| WatchKit | Apple Watch app |
 
 ## License
 
