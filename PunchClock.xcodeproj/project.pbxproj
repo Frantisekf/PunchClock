@@ -97,6 +97,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		2248D0C92F0FCE4B0090E930 /* Exceptions for "PunchClockWatch Watch App" folder in "PunchClockWatch Watch App" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 2248D0C42F0FCE4A0090E930 /* PunchClockWatch Watch App */;
+		};
 		22CC72DC2F0EA481006766EE /* Exceptions for "PunchClock" folder in "PunchClockWidgetExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -116,6 +123,9 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		2248D0C92F0FCE4A0090E930 /* PunchClockWatch Watch App */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				2248D0C92F0FCE4B0090E930 /* Exceptions for "PunchClockWatch Watch App" folder in "PunchClockWatch Watch App" target */,
+			);
 			path = "PunchClockWatch Watch App";
 			sourceTree = "<group>";
 		};
@@ -654,7 +664,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = ADYRX8482X;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "PunchClockWatch Watch App/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = PunchClockWatch;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKWatchOnly = YES;
@@ -688,7 +699,8 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = ADYRX8482X;
 				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = "PunchClockWatch Watch App/Info.plist";
 				INFOPLIST_KEY_CFBundleDisplayName = PunchClockWatch;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKWatchOnly = YES;

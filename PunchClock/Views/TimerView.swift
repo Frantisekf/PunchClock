@@ -314,13 +314,6 @@ extension TimerView {
         )
         historyStore.addRecord(record)
 
-        // Save to Apple Health
-        HealthKitManager.shared.saveWorkout(
-            duration: TimeInterval(timerManager.totalElapsedTime),
-            rounds: timerManager.state.currentRound,
-            presetName: preset.name
-        ) { _ in }
-
         workoutSaved = true
     }
 }

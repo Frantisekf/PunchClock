@@ -9,9 +9,6 @@ struct PunchClockApp: App {
     init() {
         // Register Siri Shortcuts
         PunchClockShortcuts.updateAppShortcutParameters()
-
-        // Request HealthKit authorization
-        HealthKitManager.shared.requestAuthorization { _ in }
     }
 
     var body: some Scene {
