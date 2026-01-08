@@ -120,6 +120,7 @@ struct PresetSetupView: View {
                 }
 
                 Button {
+                    HapticManager.shared.mediumTap()
                     let adjustedPreset = Preset(
                         id: preset.id,
                         name: preset.name,

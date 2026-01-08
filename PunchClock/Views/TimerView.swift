@@ -173,6 +173,7 @@ struct TimerView: View {
                    timerManager.state.phase == .round ||
                    timerManager.state.phase == .rest {
                     Button {
+                        HapticManager.shared.lightTap()
                         timerManager.restartCurrentRound()
                     } label: {
                         HStack(spacing: 6) {
@@ -194,6 +195,7 @@ struct TimerView: View {
                 if timerManager.state.phase == .prepare ||
                    timerManager.state.phase == .rest {
                     Button {
+                        HapticManager.shared.lightTap()
                         timerManager.skipPhase()
                     } label: {
                         HStack(spacing: 6) {
@@ -214,6 +216,7 @@ struct TimerView: View {
 
                 if timerManager.state.phase == .rest {
                     Button {
+                        HapticManager.shared.lightTap()
                         timerManager.addTime(20)
                     } label: {
                         HStack(spacing: 6) {
@@ -235,6 +238,7 @@ struct TimerView: View {
 
             HStack(spacing: 40) {
                 Button {
+                    HapticManager.shared.mediumTap()
                     timerManager.stop()
                 } label: {
                     Image(systemName: "stop.fill")
@@ -249,6 +253,7 @@ struct TimerView: View {
 
                 if timerManager.state.phase != .finished {
                     Button {
+                        HapticManager.shared.mediumTap()
                         timerManager.togglePauseResume()
                     } label: {
                         Image(systemName: timerManager.state.isRunning ? "pause.fill" : "play.fill")
