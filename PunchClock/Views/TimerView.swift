@@ -5,34 +5,56 @@ struct TimerView: View {
     var historyStore: WorkoutHistoryStore
     @Environment(\.colorScheme) var colorScheme
     @State private var workoutSaved = false
+    @State private var showFinishedAnimation = false
 
-    private static let finishQuotes: [(quote: String, author: String)] = [
-        ("Good.", "Jocko Willink"),
-        ("Hard work beats talent when talent doesn't work hard.", "Tim Notke"),
-        ("You did what others wouldn't. Now you'll have what others won't.", ""),
-        ("The only bad workout is the one that didn't happen.", ""),
-        ("Respect the grind.", ""),
-        ("One more day. One more step. One more round.", ""),
-        ("You don't get what you wish for. You get what you work for.", ""),
-        ("Pain is temporary. Pride is forever.", ""),
-        ("The body achieves what the mind believes.", ""),
-        ("Sweat now. Shine later.", "")
-    ]
-
-    @State private var finishQuote = finishQuotes.randomElement() ?? finishQuotes[0]
-
-    private var phaseColor: Color {
+    private var phaseGradient: LinearGradient {
         switch timerManager.state.phase {
         case .idle:
-            return .gray
+            return LinearGradient(
+                colors: [Color.gray.opacity(0.8), Color.gray],
+                startPoint: .top,
+                endPoint: .bottom
+            )
         case .prepare:
-            return Color(red: 0.95, green: 0.75, blue: 0.1)
+            return LinearGradient(
+                colors: [
+                    Color(red: 0.85, green: 0.65, blue: 0.0),
+                    Color(red: 0.95, green: 0.75, blue: 0.1),
+                    Color(red: 0.90, green: 0.70, blue: 0.05)
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
         case .round:
-            return Color(red: 0.9, green: 0.2, blue: 0.2)
+            return LinearGradient(
+                colors: [
+                    Color(red: 0.7, green: 0.1, blue: 0.1),
+                    Color(red: 0.9, green: 0.2, blue: 0.2),
+                    Color(red: 0.75, green: 0.15, blue: 0.15)
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
         case .rest:
-            return Color(red: 0.2, green: 0.75, blue: 0.4)
+            return LinearGradient(
+                colors: [
+                    Color(red: 0.1, green: 0.55, blue: 0.3),
+                    Color(red: 0.2, green: 0.75, blue: 0.4),
+                    Color(red: 0.15, green: 0.65, blue: 0.35)
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
         case .finished:
-            return Color(red: 0.2, green: 0.75, blue: 0.4)
+            return LinearGradient(
+                colors: [
+                    Color(red: 0.1, green: 0.55, blue: 0.3),
+                    Color(red: 0.2, green: 0.75, blue: 0.4),
+                    Color(red: 0.15, green: 0.65, blue: 0.35)
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
         }
     }
 
@@ -49,7 +71,7 @@ struct TimerView: View {
 
     var body: some View {
         ZStack {
-            phaseColor
+            phaseGradient
                 .ignoresSafeArea()
                 .animation(.easeInOut(duration: 0.3), value: timerManager.state.phase)
 
@@ -109,66 +131,56 @@ struct TimerView: View {
     }
 
     private var finishedView: some View {
-        VStack(spacing: 30) {
+        VStack(spacing: 0) {
             Spacer()
 
-            Image(systemName: "checkmark.circle.fill")
-                .font(.system(size: 80))
+            Text(formattedElapsedTime)
+                .font(.system(size: 72, weight: .bold, design: .monospaced))
                 .foregroundColor(.white)
-
-            Text("FINISHED")
-                .font(.system(size: 48, weight: .bold))
-                .foregroundColor(.white)
-
-            VStack(spacing: 8) {
-                Text("Total Time")
-                    .font(.subheadline)
-                    .foregroundColor(.white.opacity(0.8))
-                Text(formattedElapsedTime)
-                    .font(.system(size: 60, weight: .bold, design: .monospaced))
-                    .foregroundColor(.white)
-            }
+                .scaleEffect(showFinishedAnimation ? 1.0 : 0.8)
+                .opacity(showFinishedAnimation ? 1.0 : 0.0)
 
             if let preset = timerManager.currentPreset {
-                Text("\(preset.numberOfRounds) rounds completed")
-                    .font(.title3)
+                Text("\(preset.numberOfRounds) rounds")
+                    .font(.title2)
+                    .fontWeight(.medium)
                     .foregroundColor(.white.opacity(0.8))
+                    .padding(.top, 8)
+                    .opacity(showFinishedAnimation ? 1.0 : 0.0)
             }
 
             Spacer()
 
-            VStack(spacing: 8) {
-                Text(finishQuote.quote)
-                    .font(.title3)
-                    .italic()
-                    .foregroundColor(.white.opacity(0.9))
-                    .multilineTextAlignment(.center)
-                if !finishQuote.author.isEmpty {
-                    Text("— \(finishQuote.author)")
-                        .font(.subheadline)
-                        .foregroundColor(.white.opacity(0.7))
-                }
-            }
-            .padding(.horizontal, 40)
-
             Button {
+                HapticManager.shared.mediumTap()
                 timerManager.stop()
             } label: {
                 Text("Done")
-                    .font(.title2)
+                    .font(.title3)
                     .fontWeight(.semibold)
                     .foregroundColor(.green)
-                    .frame(width: 200, height: 56)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 56)
                     .background(Color.white)
-                    .cornerRadius(28)
+                    .cornerRadius(14)
             }
+            .padding(.horizontal, 40)
             .padding(.bottom, 50)
+            .opacity(showFinishedAnimation ? 1.0 : 0.0)
+        }
+        .onAppear {
+            withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
+                showFinishedAnimation = true
+            }
+        }
+        .onDisappear {
+            showFinishedAnimation = false
         }
     }
 
     private var controlsView: some View {
-        VStack(spacing: 20) {
-            HStack(spacing: 16) {
+        VStack(spacing: 24) {
+            HStack(spacing: 12) {
                 if timerManager.state.phase == .prepare ||
                    timerManager.state.phase == .round ||
                    timerManager.state.phase == .rest {
@@ -176,17 +188,12 @@ struct TimerView: View {
                         HapticManager.shared.lightTap()
                         timerManager.restartCurrentRound()
                     } label: {
-                        HStack(spacing: 6) {
-                            Image(systemName: "arrow.counterclockwise")
-                                .font(.system(size: 16, weight: .semibold))
-                            Text("Restart")
-                                .font(.system(size: 14, weight: .semibold))
-                        }
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 10)
-                        .background(Color.white.opacity(0.2))
-                        .cornerRadius(20)
+                        Image(systemName: "arrow.counterclockwise")
+                            .font(.system(size: 20, weight: .semibold))
+                            .foregroundColor(.white)
+                            .frame(width: 56, height: 56)
+                            .background(Color.white.opacity(0.2))
+                            .clipShape(Circle())
                     }
                     .accessibilityLabel("Restart phase")
                     .accessibilityHint("Restarts the current \(timerManager.state.phase.rawValue) phase from the beginning")
@@ -198,17 +205,12 @@ struct TimerView: View {
                         HapticManager.shared.lightTap()
                         timerManager.skipPhase()
                     } label: {
-                        HStack(spacing: 6) {
-                            Image(systemName: "forward.fill")
-                                .font(.system(size: 16, weight: .semibold))
-                            Text("Skip")
-                                .font(.system(size: 14, weight: .semibold))
-                        }
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 10)
-                        .background(Color.white.opacity(0.2))
-                        .cornerRadius(20)
+                        Image(systemName: "forward.fill")
+                            .font(.system(size: 20, weight: .semibold))
+                            .foregroundColor(.white)
+                            .frame(width: 56, height: 56)
+                            .background(Color.white.opacity(0.2))
+                            .clipShape(Circle())
                     }
                     .accessibilityLabel("Skip phase")
                     .accessibilityHint("Skips the current \(timerManager.state.phase.rawValue) phase and moves to the next")
@@ -219,32 +221,27 @@ struct TimerView: View {
                         HapticManager.shared.lightTap()
                         timerManager.addTime(20)
                     } label: {
-                        HStack(spacing: 6) {
-                            Image(systemName: "plus")
-                                .font(.system(size: 16, weight: .semibold))
-                            Text("20s")
-                                .font(.system(size: 14, weight: .semibold))
-                        }
-                        .foregroundColor(.white)
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 10)
-                        .background(Color.white.opacity(0.2))
-                        .cornerRadius(20)
+                        Text("+20s")
+                            .font(.system(size: 16, weight: .bold))
+                            .foregroundColor(.white)
+                            .frame(width: 56, height: 56)
+                            .background(Color.white.opacity(0.2))
+                            .clipShape(Circle())
                     }
                     .accessibilityLabel("Add 20 seconds")
                     .accessibilityHint("Adds 20 seconds of extra rest time")
                 }
             }
 
-            HStack(spacing: 40) {
+            HStack(spacing: 32) {
                 Button {
                     HapticManager.shared.mediumTap()
                     timerManager.stop()
                 } label: {
-                    Image(systemName: "stop.fill")
-                        .font(.system(size: 30))
+                    Image(systemName: "xmark")
+                        .font(.system(size: 28, weight: .semibold))
                         .foregroundColor(.white)
-                        .frame(width: 70, height: 70)
+                        .frame(width: 72, height: 72)
                         .background(Color.white.opacity(0.2))
                         .clipShape(Circle())
                 }
@@ -257,10 +254,10 @@ struct TimerView: View {
                         timerManager.togglePauseResume()
                     } label: {
                         Image(systemName: timerManager.state.isRunning ? "pause.fill" : "play.fill")
-                            .font(.system(size: 40))
+                            .font(.system(size: 36))
                             .foregroundColor(.white)
-                            .frame(width: 90, height: 90)
-                            .background(Color.white.opacity(0.3))
+                            .frame(width: 88, height: 88)
+                            .background(Color.white.opacity(0.25))
                             .clipShape(Circle())
                     }
                     .accessibilityLabel(timerManager.state.isRunning ? "Pause" : "Resume")

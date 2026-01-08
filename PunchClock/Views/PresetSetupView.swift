@@ -29,6 +29,12 @@ struct PresetSetupView: View {
 
     private var prepareTime: Int { prepareMinutes * 60 + prepareSeconds }
 
+    @Environment(\.verticalSizeClass) var verticalSizeClass
+
+    private var pickerHeight: CGFloat {
+        verticalSizeClass == .compact ? 60 : 80
+    }
+
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
@@ -53,9 +59,9 @@ struct PresetSetupView: View {
                             }
                             .pickerStyle(.wheel)
                         }
-                        .frame(height: 120)
+                        .frame(height: pickerHeight)
                     } header: {
-                        Label("Round Duration", systemImage: "flame.fill")
+                        Label("Round", systemImage: "flame.fill")
                             .foregroundColor(.red)
                     }
 
@@ -75,9 +81,9 @@ struct PresetSetupView: View {
                             }
                             .pickerStyle(.wheel)
                         }
-                        .frame(height: 120)
+                        .frame(height: pickerHeight)
                     } header: {
-                        Label("Rest Duration", systemImage: "pause.circle.fill")
+                        Label("Rest", systemImage: "pause.circle.fill")
                             .foregroundColor(.green)
                     }
 
@@ -97,25 +103,10 @@ struct PresetSetupView: View {
                             }
                             .pickerStyle(.wheel)
                         }
-                        .frame(height: 120)
+                        .frame(height: pickerHeight)
                     } header: {
-                        Label("Prepare Time", systemImage: "clock.badge.exclamationmark")
+                        Label("Prepare", systemImage: "clock")
                             .foregroundColor(.yellow)
-                    }
-
-                    Section {
-                        HStack {
-                            Spacer()
-                            VStack(spacing: 4) {
-                                Text("Total Workout")
-                                    .font(.caption)
-                                    .foregroundColor(.secondary)
-                                Text(totalTimeFormatted)
-                                    .font(.title2)
-                                    .fontWeight(.semibold)
-                            }
-                            Spacer()
-                        }
                     }
                 }
 
@@ -131,13 +122,17 @@ struct PresetSetupView: View {
                     )
                     onStart(adjustedPreset)
                 } label: {
-                    Text("Start Timer")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
-                        .padding(.top, 18)
-                        .padding(.bottom, 6)
+                    VStack(spacing: 2) {
+                        Text("Start Timer")
+                            .font(.title3)
+                            .fontWeight(.bold)
+                        Text(totalTimeFormatted)
+                            .font(.subheadline)
+                    }
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity)
+                    .padding(.top, 12)
+                    .padding(.bottom, 4)
                 }
                 .background(Color.green)
             }

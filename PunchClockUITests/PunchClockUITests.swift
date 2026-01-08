@@ -25,7 +25,7 @@ final class PunchClockUITests: XCTestCase {
 
     @MainActor
     func testAppLaunches() throws {
-        XCTAssertTrue(app.navigationBars["Ring Timer"].exists)
+        XCTAssertTrue(app.navigationBars["Round Timer"].exists)
     }
 
     @MainActor

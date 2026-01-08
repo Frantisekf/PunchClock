@@ -41,7 +41,7 @@ final class TimerManager: ObservableObject {
             forName: UIApplication.didEnterBackgroundNotification,
             object: nil,
             queue: .main
-        ) { [weak self] _ in
+        ) { _ in
             // Audio continues in background via AVAudioSession - no notifications needed
         }
     }

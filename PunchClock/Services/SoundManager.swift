@@ -31,7 +31,7 @@ final class SoundManager: ObservableObject {
             )
             try audioSession?.setActive(true, options: .notifyOthersOnDeactivation)
         } catch {
-            print("Audio session setup failed: \(error)")
+            // Audio session setup failed - app will use system sound fallbacks
         }
     }
 
@@ -59,7 +59,12 @@ final class SoundManager: ObservableObject {
         }
     }
 
+    private var isEnabled: Bool {
+        SettingsStore.shared.soundEnabled
+    }
+
     func playSound(_ sound: Sound) {
+        guard isEnabled else { return }
         if let player = audioPlayers[sound.rawValue] {
             player.currentTime = 0
             player.play()

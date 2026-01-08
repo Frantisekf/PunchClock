@@ -1,7 +1,10 @@
 {
   "permissions": {
     "allow": [
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(xcrun simctl io:*)",
+      "Bash(open:*)",
+      "Bash(xcrun simctl install:*)"
     ],
     "deny": [],
     "ask": []

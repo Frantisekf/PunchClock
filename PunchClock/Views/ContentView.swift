@@ -7,7 +7,9 @@ struct ContentView: View {
     @State private var selectedPreset: Preset?
     @State private var showingPresetEditor = false
     @State private var showingHistory = false
+    @State private var showingSettings = false
     @State private var editingPreset: Preset?
+    @ObservedObject private var settings = SettingsStore.shared
 
     var body: some View {
         NavigationStack {
@@ -60,34 +62,37 @@ struct ContentView: View {
                         .listRowSeparator(.hidden, edges: .top)
                         .listRowSeparator(index == presetStore.presets.count - 1 ? .hidden : .visible, edges: .bottom)
                 }
-            } header: {
-                Text("Combat Sports Timer")
-                    .font(.subheadline)
-                    .fontWeight(.regular)
-                    .foregroundColor(.secondary)
-                    .textCase(nil)
-                    .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
-                    .padding(.bottom, 8)
-            } footer: {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("Tap to start, swipe left to edit or delete")
-                    Text("\"Hey Siri, start Boxing Standard in Ring Timer\"")
-                        .italic()
-                }
             }
 
-            Section {
-                QuoteView()
+            if settings.showQuotes {
+                Section {
+                    QuoteView()
+                }
             }
         }
-        .navigationTitle("Ring Timer")
+        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
-                Button {
-                    showingHistory = true
+                Menu {
+                    Button {
+                        showingHistory = true
+                    } label: {
+                        Label("History", systemImage: "clock.arrow.circlepath")
+                    }
+
+                    Button {
+                        showingSettings = true
+                    } label: {
+                        Label("Settings", systemImage: "gearshape")
+                    }
                 } label: {
-                    Image(systemName: "clock.arrow.circlepath")
+                    Image(systemName: "ellipsis.circle")
                 }
+            }
+            ToolbarItem(placement: .principal) {
+                Text("Round Timer")
+                    .font(.headline)
+                    .fontWeight(.bold)
             }
             ToolbarItem(placement: .navigationBarTrailing) {
                 Button {
@@ -101,6 +106,9 @@ struct ContentView: View {
         .sheet(isPresented: $showingHistory) {
             HistoryView()
                 .environmentObject(historyStore)
+        }
+        .sheet(isPresented: $showingSettings) {
+            SettingsView()
         }
         .sheet(isPresented: $showingPresetEditor) {
             PresetEditorView(
@@ -149,20 +157,27 @@ struct PresetRow: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 6) {
-            Text(preset.name)
-                .font(.headline)
+        HStack {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(preset.name)
+                    .font(.headline)
 
-            HStack(spacing: 12) {
-                Label(formatTime(preset.roundTime), systemImage: "timer")
-                Label("\(preset.numberOfRounds) rounds", systemImage: "repeat")
-                Label(formatTime(preset.restTime), systemImage: "pause.circle")
-                Label(formattedTotalTime, systemImage: "clock")
+                HStack(spacing: 12) {
+                    Text("\(preset.numberOfRounds) rounds")
+                    Text(formatTime(preset.roundTime))
+                    Text("\(formatTime(preset.restTime)) rest")
+                }
+                .font(.subheadline)
+                .foregroundColor(.secondary)
             }
-            .font(.caption)
-            .foregroundColor(.secondary)
+
+            Spacer()
+
+            Text(formattedTotalTime)
+                .font(.subheadline)
+                .foregroundColor(.secondary)
         }
-        .padding(.vertical, 4)
+        .padding(.vertical, 10)
         .alignmentGuide(.listRowSeparatorLeading) { _ in 0 }
     }
 
@@ -290,18 +305,24 @@ struct QuoteView: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        VStack(alignment: .center, spacing: 8) {
+            Image(systemName: "quote.opening")
+                .font(.title3)
+                .foregroundColor(.secondary.opacity(0.4))
+
             Text(currentQuote.quote)
                 .font(.subheadline)
                 .italic()
                 .foregroundColor(.secondary)
+                .multilineTextAlignment(.center)
 
             Text("— \(currentQuote.author)")
                 .font(.caption)
                 .fontWeight(.medium)
                 .foregroundColor(.secondary.opacity(0.8))
         }
-        .padding(.vertical, 4)
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 12)
         .listRowBackground(Color.clear)
         .contentShape(Rectangle())
         .onTapGesture {

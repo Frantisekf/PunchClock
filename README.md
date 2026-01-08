@@ -1,4 +1,4 @@
-# Ring Timer
+# Round Timer
 
 A no-nonsense combat sports interval timer for iOS and Apple Watch with Dynamic Island and Live Activity support.
 
@@ -16,9 +16,9 @@ boxing timer, mma timer, muay thai timer, bjj timer, hiit timer, interval timer,
 Professional interval timer for boxing, MMA, BJJ, Muay Thai, and HIIT workouts. Apple Watch + Dynamic Island support. No ads.
 
 ### Full Description
-Ring Timer is the ultimate interval timer built for fighters and athletes. Whether you're boxing, rolling BJJ, doing Muay Thai rounds, or crushing a HIIT session - this timer keeps you focused on training, not fumbling with your phone.
+Round Timer is the ultimate interval timer built for fighters and athletes. Whether you're boxing, rolling BJJ, doing Muay Thai rounds, or crushing a HIIT session - this timer keeps you focused on training, not fumbling with your phone.
 
-**Why Ring Timer?**
+**Why Round Timer?**
 - Start your timer and forget about your phone
 - Apple Watch app for wrist-based training
 - Dynamic Island shows your countdown while multitasking
@@ -128,9 +128,9 @@ PunchClock/
 
 Start timers hands-free (great when gloved up):
 
-- "Hey Siri, start Boxing Standard in Ring Timer"
-- "Hey Siri, start BJJ Rolling in Ring Timer"
-- "Hey Siri, start sparring with Ring Timer"
+- "Hey Siri, start Boxing Standard in Round Timer"
+- "Hey Siri, start BJJ Rolling in Round Timer"
+- "Hey Siri, start sparring with Round Timer"
 
 ## Tech Stack
 

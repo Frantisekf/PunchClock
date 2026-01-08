@@ -17,6 +17,12 @@ struct PresetEditorView: View {
 
     private var isEditing: Bool { preset != nil }
 
+    @Environment(\.verticalSizeClass) var verticalSizeClass
+
+    private var pickerHeight: CGFloat {
+        verticalSizeClass == .compact ? 60 : 80
+    }
+
     private var prepareTime: Int { prepareMinutes * 60 + prepareSeconds }
     private var roundTime: Int { roundMinutes * 60 + roundSeconds }
     private var restTime: Int { restMinutes * 60 + restSeconds }
@@ -38,8 +44,15 @@ struct PresetEditorView: View {
     var body: some View {
         NavigationStack {
             Form {
-                Section("Name") {
+                Section {
                     TextField("Preset Name", text: $name)
+                } header: {
+                    Text("Name")
+                } footer: {
+                    if name.isEmpty {
+                        Text("Enter a name to save")
+                            .foregroundColor(.red)
+                    }
                 }
 
                 Section("Rounds") {
@@ -62,9 +75,9 @@ struct PresetEditorView: View {
                         }
                         .pickerStyle(.wheel)
                     }
-                    .frame(height: 120)
+                    .frame(height: pickerHeight)
                 } header: {
-                    Label("Round Duration", systemImage: "flame.fill")
+                    Label("Round", systemImage: "flame.fill")
                         .foregroundColor(.red)
                 }
 
@@ -84,9 +97,9 @@ struct PresetEditorView: View {
                         }
                         .pickerStyle(.wheel)
                     }
-                    .frame(height: 120)
+                    .frame(height: pickerHeight)
                 } header: {
-                    Label("Rest Duration", systemImage: "pause.circle.fill")
+                    Label("Rest", systemImage: "pause.circle.fill")
                         .foregroundColor(.green)
                 }
 
@@ -106,32 +119,37 @@ struct PresetEditorView: View {
                         }
                         .pickerStyle(.wheel)
                     }
-                    .frame(height: 120)
+                    .frame(height: pickerHeight)
                 } header: {
-                    Label("Prepare Time", systemImage: "clock.badge.exclamationmark")
+                    Label("Prepare", systemImage: "clock")
                         .foregroundColor(.yellow)
                 }
-
-                Section {
-                    HStack {
-                        Text("Total Workout Time")
-                        Spacer()
-                        Text(formattedTotalTime)
-                            .fontWeight(.semibold)
-                            .foregroundColor(.secondary)
-                    }
-                }
             }
+
+            Button {
+                HapticManager.shared.mediumTap()
+                savePreset()
+            } label: {
+                VStack(spacing: 2) {
+                    Text("Save Preset")
+                        .font(.title3)
+                        .fontWeight(.bold)
+                    Text(formattedTotalTime)
+                        .font(.subheadline)
+                }
+                .foregroundColor(.black)
+                .frame(maxWidth: .infinity)
+                .padding(.top, 12)
+                .padding(.bottom, 4)
+            }
+            .background(Color.orange)
+            .disabled(name.isEmpty)
+            .opacity(name.isEmpty ? 0.5 : 1.0)
             .navigationTitle(isEditing ? "Edit Preset" : "New Preset")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") { dismiss() }
-                }
-
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("Save") { savePreset() }
-                        .disabled(name.isEmpty)
                 }
             }
             .onAppear {

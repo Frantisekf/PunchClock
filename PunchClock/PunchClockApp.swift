@@ -6,6 +6,7 @@ import ActivityKit
 struct PunchClockApp: App {
     @StateObject private var presetStore = PresetStore()
     @StateObject private var historyStore = WorkoutHistoryStore()
+    @ObservedObject private var settings = SettingsStore.shared
 
     init() {
         // Register Siri Shortcuts
@@ -31,6 +32,7 @@ struct PunchClockApp: App {
             ContentView()
                 .environmentObject(presetStore)
                 .environmentObject(historyStore)
+                .preferredColorScheme(settings.appearanceMode.colorScheme)
         }
     }
 }

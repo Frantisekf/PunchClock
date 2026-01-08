@@ -1,12 +1,12 @@
 # Privacy Policy
 
-**Ring Timer**
+**Round Timer**
 
 Last updated: January 8, 2026
 
 ## Overview
 
-Ring Timer is designed with your privacy in mind. We do not collect, store, or transmit any personal data.
+Round Timer is designed with your privacy in mind. We do not collect, store, or transmit any personal data.
 
 ## Data Collection
 
@@ -24,7 +24,7 @@ All app data (presets, workout history) is stored locally on your device only. T
 
 ## Third-Party Services
 
-Ring Timer uses no third-party services, analytics, or advertising networks.
+Round Timer uses no third-party services, analytics, or advertising networks.
 
 ## Permissions
 

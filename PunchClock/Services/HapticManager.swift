@@ -12,6 +12,10 @@ final class HapticManager {
         CHHapticEngine.capabilitiesForHardware().supportsHaptics
     }
 
+    private var isEnabled: Bool {
+        SettingsStore.shared.soundEnabled
+    }
+
     private init() {
         // Prepare generators
         lightFeedback.prepare()
@@ -21,19 +25,19 @@ final class HapticManager {
 
     /// Light tap feedback - for button taps, selections
     func lightTap() {
-        guard supportsHaptics else { return }
+        guard supportsHaptics, isEnabled else { return }
         lightFeedback.impactOccurred()
     }
 
     /// Medium tap feedback - for more significant actions
     func mediumTap() {
-        guard supportsHaptics else { return }
+        guard supportsHaptics, isEnabled else { return }
         mediumFeedback.impactOccurred()
     }
 
     /// Selection feedback - for picker changes, toggles
     func selection() {
-        guard supportsHaptics else { return }
+        guard supportsHaptics, isEnabled else { return }
         selectionFeedback.selectionChanged()
     }
 }
