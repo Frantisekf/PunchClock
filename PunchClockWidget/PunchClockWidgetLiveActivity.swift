@@ -160,6 +160,7 @@ struct PunchClockWidgetLiveActivity: Widget {
     }
 }
 
+@available(iOS 17.0, *)
 #Preview("Notification", as: .content, using: TimerActivityAttributes(presetName: "Boxing Standard")) {
    PunchClockWidgetLiveActivity()
 } contentStates: {
