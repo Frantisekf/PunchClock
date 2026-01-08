@@ -260,12 +260,24 @@ final class TimerManager: ObservableObject {
             }
 
         case .round:
+            // 10 second warning clapper (check at 11 so it plays when display shows 10)
+            if state.timeRemaining == 11 {
+                soundManager.playClapper()
+                hapticMedium.impactOccurred()
+            }
+            // Final countdown beeps at 3, 2, 1
             if state.timeRemaining <= 3 && state.timeRemaining > 0 {
                 soundManager.playCountdown()
                 hapticMedium.impactOccurred()
             }
 
         case .rest:
+            // 10 second warning clapper (check at 11 so it plays when display shows 10)
+            if state.timeRemaining == 11 {
+                soundManager.playClapper()
+                hapticMedium.impactOccurred()
+            }
+            // Countdown beeps at 3, 2, 1
             if state.timeRemaining <= 3 && state.timeRemaining > 0 {
                 soundManager.playCountdown()
                 hapticLight.impactOccurred()

@@ -11,7 +11,7 @@ final class SoundManager: ObservableObject {
 
     enum Sound: String {
         case bell = "bell"
-        case stickPunch = "stick_punch"
+        case clapper = "clapper"
         case countdown = "countdown"
     }
 
@@ -45,8 +45,8 @@ final class SoundManager: ObservableObject {
     }
 
     private func preloadSounds() {
-        for sound in [Sound.bell, .stickPunch, .countdown] {
-            if let url = Bundle.main.url(forResource: sound.rawValue, withExtension: "wav") ??
+        for sound in [Sound.bell, .clapper, .countdown] {
+            if let url = Bundle.main.url(forResource: sound.rawValue, withExtension: "m4a") ??
                         Bundle.main.url(forResource: sound.rawValue, withExtension: "mp3") {
                 do {
                     let player = try AVAudioPlayer(contentsOf: url)
@@ -77,7 +77,7 @@ final class SoundManager: ObservableObject {
         switch sound {
         case .bell:
             AudioServicesPlayAlertSound(1304)
-        case .stickPunch:
+        case .clapper:
             AudioServicesPlayAlertSound(1104)
         case .countdown:
             AudioServicesPlayAlertSound(1103)
@@ -88,10 +88,10 @@ final class SoundManager: ObservableObject {
         playSound(.bell)
     }
 
-    func playStickPunch() {
-        playSound(.stickPunch)
+    func playClapper() {
+        playSound(.clapper)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) { [weak self] in
-            self?.playSound(.stickPunch)
+            self?.playSound(.clapper)
         }
     }
 
