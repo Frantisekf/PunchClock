@@ -33,13 +33,18 @@ struct PunchClockWidgetLiveActivity: Widget {
                 }
 
                 DynamicIslandExpandedRegion(.center) {
-                    if context.state.isRunning {
+                    if context.state.isRunning && context.state.endTime > Date() {
                         Text(context.state.endTime, style: .timer)
                             .font(.system(size: 40, weight: .bold, design: .rounded))
                             .foregroundColor(.white)
                             .monospacedDigit()
-                    } else {
+                    } else if !context.state.isRunning {
                         Text(formatTime(context.state.timeRemaining))
+                            .font(.system(size: 40, weight: .bold, design: .rounded))
+                            .foregroundColor(.white)
+                            .monospacedDigit()
+                    } else {
+                        Text("0:00")
                             .font(.system(size: 40, weight: .bold, design: .rounded))
                             .foregroundColor(.white)
                             .monospacedDigit()
@@ -62,17 +67,23 @@ struct PunchClockWidgetLiveActivity: Widget {
                 Image(systemName: phaseIcon(for: context.state.phase))
                     .foregroundColor(phaseColor(for: context.state.phase))
             } compactTrailing: {
-                if context.state.isRunning {
+                if context.state.isRunning && context.state.endTime > Date() {
                     Text(context.state.endTime, style: .timer)
                         .multilineTextAlignment(.trailing)
                         .monospacedDigit()
                         .foregroundColor(phaseColor(for: context.state.phase))
                         .frame(width: 42)
                         .fixedSize()
-                } else {
+                } else if !context.state.isRunning {
                     Text(formatTime(context.state.timeRemaining))
                         .monospacedDigit()
                         .foregroundColor(.orange)
+                        .frame(width: 42)
+                        .fixedSize()
+                } else {
+                    Text("0:00")
+                        .monospacedDigit()
+                        .foregroundColor(phaseColor(for: context.state.phase))
                         .frame(width: 42)
                         .fixedSize()
                 }
@@ -103,16 +114,20 @@ struct PunchClockWidgetLiveActivity: Widget {
             }
 
             HStack(alignment: .firstTextBaseline, spacing: 4) {
-                if context.state.isRunning {
+                if context.state.isRunning && context.state.endTime > Date() {
                     Text(context.state.endTime, style: .timer)
                         .font(.system(size: 36, weight: .bold, design: .rounded))
                         .monospacedDigit()
-                } else {
+                } else if !context.state.isRunning {
                     Text(formatTime(context.state.timeRemaining))
                         .font(.system(size: 36, weight: .bold, design: .rounded))
                         .monospacedDigit()
                     Image(systemName: "pause.circle.fill")
                         .foregroundColor(.orange)
+                } else {
+                    Text("0:00")
+                        .font(.system(size: 36, weight: .bold, design: .rounded))
+                        .monospacedDigit()
                 }
             }
 

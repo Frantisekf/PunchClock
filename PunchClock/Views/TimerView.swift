@@ -319,7 +319,6 @@ extension TimerView {
 }
 
 #Preview {
-    let manager = TimerManager()
-    manager.start(with: .boxingStandard)
-    return TimerView(timerManager: manager, historyStore: WorkoutHistoryStore())
+    TimerManager.shared.start(with: .boxingStandard)
+    return TimerView(timerManager: TimerManager.shared, historyStore: WorkoutHistoryStore())
 }

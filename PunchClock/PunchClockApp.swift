@@ -1,5 +1,6 @@
 import SwiftUI
 import AppIntents
+import ActivityKit
 
 @main
 struct PunchClockApp: App {
@@ -9,6 +10,20 @@ struct PunchClockApp: App {
     init() {
         // Register Siri Shortcuts
         PunchClockShortcuts.updateAppShortcutParameters()
+
+        // End any orphaned Live Activities from previous sessions
+        cleanupOrphanedLiveActivities()
+    }
+
+    private func cleanupOrphanedLiveActivities() {
+        // If timer isn't running but there are active Live Activities, end them
+        if TimerManager.shared.state.phase == .idle {
+            for activity in Activity<TimerActivityAttributes>.activities {
+                Task {
+                    await activity.end(nil, dismissalPolicy: .immediate)
+                }
+            }
+        }
     }
 
     var body: some Scene {

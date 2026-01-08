@@ -3,7 +3,7 @@ import SwiftUI
 struct ContentView: View {
     @EnvironmentObject var presetStore: PresetStore
     @EnvironmentObject var historyStore: WorkoutHistoryStore
-    @StateObject private var timerManager = TimerManager()
+    @ObservedObject private var timerManager = TimerManager.shared
     @State private var selectedPreset: Preset?
     @State private var showingPresetEditor = false
     @State private var showingHistory = false
@@ -11,11 +11,16 @@ struct ContentView: View {
 
     var body: some View {
         NavigationStack {
-            if timerManager.state.phase == .idle {
-                presetListView
-            } else {
-                TimerView(timerManager: timerManager, historyStore: historyStore)
+            ZStack {
+                if timerManager.state.phase == .idle {
+                    presetListView
+                        .transition(.opacity)
+                } else {
+                    TimerView(timerManager: timerManager, historyStore: historyStore)
+                        .transition(.opacity)
+                }
             }
+            .animation(.easeInOut(duration: 0.3), value: timerManager.state.phase == .idle)
         }
         .onReceive(NotificationCenter.default.publisher(for: .startTimerFromSiri)) { notification in
             if let presetName = notification.userInfo?["presetName"] as? String,
@@ -114,7 +119,10 @@ struct ContentView: View {
                 preset: preset,
                 onStart: { adjustedPreset in
                     selectedPreset = nil
-                    timerManager.start(with: adjustedPreset)
+                    // Small delay for sheet dismiss animation to complete
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+                        timerManager.start(with: adjustedPreset)
+                    }
                 },
                 onCancel: {
                     selectedPreset = nil
