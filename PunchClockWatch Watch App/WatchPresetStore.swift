@@ -5,9 +5,11 @@ final class WatchPresetStore: ObservableObject {
     @Published var presets: [WatchPreset] = []
 
     private let presetsKey = "watch_presets"
+    private var cancellables = Set<AnyCancellable>()
 
     init() {
         loadPresets()
+        setupConnectivityListener()
     }
 
     private func loadPresets() {
@@ -17,6 +19,16 @@ final class WatchPresetStore: ObservableObject {
         } else {
             presets = WatchPreset.defaultPresets
         }
+    }
+
+    private func setupConnectivityListener() {
+        WatchConnectivityManager.shared.$receivedPresets
+            .compactMap { $0 }
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] newPresets in
+                self?.updatePresets(newPresets)
+            }
+            .store(in: &cancellables)
     }
 
     func savePresets() {

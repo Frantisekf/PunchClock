@@ -3,18 +3,44 @@ import SwiftUI
 struct WatchTimerView: View {
     @ObservedObject var timerManager: WatchTimerManager
 
-    private var phaseColor: Color {
+    private var phaseGradient: LinearGradient {
         switch timerManager.state.phase {
         case .idle:
-            return .gray
+            return LinearGradient(
+                colors: [Color.gray.opacity(0.8), Color.gray],
+                startPoint: .top,
+                endPoint: .bottom
+            )
         case .prepare:
-            return .yellow
+            return LinearGradient(
+                colors: [
+                    Color(red: 0.85, green: 0.65, blue: 0.0),
+                    Color(red: 0.95, green: 0.75, blue: 0.1),
+                    Color(red: 0.90, green: 0.70, blue: 0.05)
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
         case .round:
-            return .red
-        case .rest:
-            return .green
-        case .finished:
-            return .green
+            return LinearGradient(
+                colors: [
+                    Color(red: 0.7, green: 0.1, blue: 0.1),
+                    Color(red: 0.9, green: 0.2, blue: 0.2),
+                    Color(red: 0.75, green: 0.15, blue: 0.15)
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+        case .rest, .finished:
+            return LinearGradient(
+                colors: [
+                    Color(red: 0.1, green: 0.55, blue: 0.3),
+                    Color(red: 0.2, green: 0.75, blue: 0.4),
+                    Color(red: 0.15, green: 0.65, blue: 0.35)
+                ],
+                startPoint: .top,
+                endPoint: .bottom
+            )
         }
     }
 
@@ -28,8 +54,9 @@ struct WatchTimerView: View {
 
     private var timerView: some View {
         ZStack {
-            phaseColor
+            phaseGradient
                 .ignoresSafeArea()
+                .animation(.easeInOut(duration: 0.3), value: timerManager.state.phase)
 
             VStack(spacing: 4) {
                 Spacer()
@@ -101,7 +128,7 @@ struct WatchTimerView: View {
 
     private var finishedView: some View {
         ZStack {
-            Color.green
+            phaseGradient
                 .ignoresSafeArea()
 
             VStack(spacing: 8) {

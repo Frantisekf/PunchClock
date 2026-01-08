@@ -17,14 +17,17 @@ final class PresetStore: ObservableObject {
             presets = decoded
         } else {
             presets = Preset.defaultPresets
-            savePresets()
         }
+        // Sync to Watch on load
+        WatchConnectivityManager.shared.syncPresets(presets)
     }
 
     func savePresets() {
         if let encoded = try? JSONEncoder().encode(presets) {
             UserDefaults.standard.set(encoded, forKey: saveKey)
         }
+        // Sync to Watch
+        WatchConnectivityManager.shared.syncPresets(presets)
     }
 
     func addPreset(_ preset: Preset) {
