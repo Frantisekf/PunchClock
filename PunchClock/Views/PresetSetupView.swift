@@ -31,115 +31,120 @@ struct PresetSetupView: View {
 
     var body: some View {
         NavigationStack {
-            Form {
-                Section("Rounds") {
-                    Stepper("\(rounds) rounds", value: $rounds, in: 1...99)
-                }
-
-                Section {
-                    HStack {
-                        Picker("Minutes", selection: $roundMinutes) {
-                            ForEach(0...10, id: \.self) { minute in
-                                Text("\(minute) min").tag(minute)
-                            }
-                        }
-                        .pickerStyle(.wheel)
-
-                        Picker("Seconds", selection: $roundSeconds) {
-                            ForEach(Array(stride(from: 0, to: 60, by: 5)), id: \.self) { second in
-                                Text("\(second) sec").tag(second)
-                            }
-                        }
-                        .pickerStyle(.wheel)
+            VStack(spacing: 0) {
+                Form {
+                    Section("Rounds") {
+                        Stepper("\(rounds) rounds", value: $rounds, in: 1...99)
                     }
-                    .frame(height: 120)
-                } header: {
-                    Label("Round Duration", systemImage: "flame.fill")
-                        .foregroundColor(.red)
-                }
 
-                Section {
-                    HStack {
-                        Picker("Minutes", selection: $restMinutes) {
-                            ForEach(0...5, id: \.self) { minute in
-                                Text("\(minute) min").tag(minute)
+                    Section {
+                        HStack {
+                            Picker("Minutes", selection: $roundMinutes) {
+                                ForEach(0...10, id: \.self) { minute in
+                                    Text("\(minute) min").tag(minute)
+                                }
                             }
-                        }
-                        .pickerStyle(.wheel)
+                            .pickerStyle(.wheel)
 
-                        Picker("Seconds", selection: $restSeconds) {
-                            ForEach(Array(stride(from: 0, to: 60, by: 5)), id: \.self) { second in
-                                Text("\(second) sec").tag(second)
+                            Picker("Seconds", selection: $roundSeconds) {
+                                ForEach(Array(stride(from: 0, to: 60, by: 5)), id: \.self) { second in
+                                    Text("\(second) sec").tag(second)
+                                }
                             }
+                            .pickerStyle(.wheel)
                         }
-                        .pickerStyle(.wheel)
+                        .frame(height: 120)
+                    } header: {
+                        Label("Round Duration", systemImage: "flame.fill")
+                            .foregroundColor(.red)
                     }
-                    .frame(height: 120)
-                } header: {
-                    Label("Rest Duration", systemImage: "pause.circle.fill")
-                        .foregroundColor(.green)
-                }
 
-                Section {
-                    HStack {
-                        Picker("Minutes", selection: $prepareMinutes) {
-                            ForEach(0...2, id: \.self) { minute in
-                                Text("\(minute) min").tag(minute)
+                    Section {
+                        HStack {
+                            Picker("Minutes", selection: $restMinutes) {
+                                ForEach(0...5, id: \.self) { minute in
+                                    Text("\(minute) min").tag(minute)
+                                }
                             }
-                        }
-                        .pickerStyle(.wheel)
+                            .pickerStyle(.wheel)
 
-                        Picker("Seconds", selection: $prepareSeconds) {
-                            ForEach(Array(stride(from: 0, to: 60, by: 5)), id: \.self) { second in
-                                Text("\(second) sec").tag(second)
+                            Picker("Seconds", selection: $restSeconds) {
+                                ForEach(Array(stride(from: 0, to: 60, by: 5)), id: \.self) { second in
+                                    Text("\(second) sec").tag(second)
+                                }
                             }
+                            .pickerStyle(.wheel)
                         }
-                        .pickerStyle(.wheel)
+                        .frame(height: 120)
+                    } header: {
+                        Label("Rest Duration", systemImage: "pause.circle.fill")
+                            .foregroundColor(.green)
                     }
-                    .frame(height: 120)
-                } header: {
-                    Label("Prepare Time", systemImage: "clock.badge.exclamationmark")
-                        .foregroundColor(.yellow)
+
+                    Section {
+                        HStack {
+                            Picker("Minutes", selection: $prepareMinutes) {
+                                ForEach(0...2, id: \.self) { minute in
+                                    Text("\(minute) min").tag(minute)
+                                }
+                            }
+                            .pickerStyle(.wheel)
+
+                            Picker("Seconds", selection: $prepareSeconds) {
+                                ForEach(Array(stride(from: 0, to: 60, by: 5)), id: \.self) { second in
+                                    Text("\(second) sec").tag(second)
+                                }
+                            }
+                            .pickerStyle(.wheel)
+                        }
+                        .frame(height: 120)
+                    } header: {
+                        Label("Prepare Time", systemImage: "clock.badge.exclamationmark")
+                            .foregroundColor(.yellow)
+                    }
+
+                    Section {
+                        HStack {
+                            Spacer()
+                            VStack(spacing: 4) {
+                                Text("Total Workout")
+                                    .font(.caption)
+                                    .foregroundColor(.secondary)
+                                Text(totalTimeFormatted)
+                                    .font(.title2)
+                                    .fontWeight(.semibold)
+                            }
+                            Spacer()
+                        }
+                    }
                 }
 
-                Section {
-                    HStack {
-                        Spacer()
-                        VStack(spacing: 4) {
-                            Text("Total Workout")
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                            Text(totalTimeFormatted)
-                                .font(.title2)
-                                .fontWeight(.semibold)
-                        }
-                        Spacer()
-                    }
+                Button {
+                    let adjustedPreset = Preset(
+                        id: preset.id,
+                        name: preset.name,
+                        prepareTime: prepareTime,
+                        roundTime: roundMinutes * 60 + roundSeconds,
+                        restTime: restMinutes * 60 + restSeconds,
+                        numberOfRounds: rounds
+                    )
+                    onStart(adjustedPreset)
+                } label: {
+                    Text("Start Timer")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity)
+                        .padding(.top, 18)
+                        .padding(.bottom, 6)
                 }
+                .background(Color.green)
             }
             .navigationTitle(preset.name)
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
                     Button("Cancel") { onCancel() }
-                        .foregroundColor(.red)
-                }
-                ToolbarItem(placement: .confirmationAction) {
-                    Button {
-                        let adjustedPreset = Preset(
-                            id: preset.id,
-                            name: preset.name,
-                            prepareTime: max(prepareTime, 5),
-                            roundTime: roundMinutes * 60 + roundSeconds,
-                            restTime: restMinutes * 60 + restSeconds,
-                            numberOfRounds: rounds
-                        )
-                        onStart(adjustedPreset)
-                    } label: {
-                        Text("Start")
-                            .fontWeight(.bold)
-                            .foregroundColor(.green)
-                    }
                 }
             }
         }
