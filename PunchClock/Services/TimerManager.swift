@@ -2,6 +2,7 @@ import Foundation
 import Combine
 import ActivityKit
 import UIKit
+import UserNotifications
 
 final class TimerManager: ObservableObject {
     static let shared = TimerManager()
@@ -77,8 +78,10 @@ final class TimerManager: ObservableObject {
 
         soundManager.setupAudioSession()
         soundManager.startBackgroundAudio()
+        enableScreenAwake(true)
         startTimer()
         startLiveActivity(preset: preset)
+        scheduleAllNotifications(preset: preset)
     }
 
     func pause() {
@@ -86,14 +89,17 @@ final class TimerManager: ObservableObject {
         timer?.invalidate()
         timer = nil
         phaseEndTime = nil
+        cancelAllNotifications()
         updateLiveActivity()
     }
 
     func resume() {
         guard state.phase != .idle && state.phase != .finished else { return }
+        guard let preset = preset else { return }
         state.isRunning = true
         phaseEndTime = Date().addingTimeInterval(TimeInterval(state.timeRemaining))
         startTimer()
+        rescheduleNotificationsFromCurrentState(preset: preset)
         updateLiveActivity()
     }
 
@@ -103,6 +109,8 @@ final class TimerManager: ObservableObject {
         phaseEndTime = nil
         state = TimerState()
         soundManager.stopBackgroundAudio()
+        enableScreenAwake(false)
+        cancelAllNotifications()
         endLiveActivity()
         endBackgroundTask()
     }
@@ -316,6 +324,8 @@ final class TimerManager: ObservableObject {
                 timer?.invalidate()
                 timer = nil
                 soundManager.stopBackgroundAudio()
+                enableScreenAwake(false)
+                cancelAllNotifications()
                 endBackgroundTask()
                 endLiveActivity()
             } else if preset.restTime > 0 {
@@ -433,5 +443,149 @@ final class TimerManager: ObservableObject {
             )
         }
         currentActivity = nil
+    }
+
+    // MARK: - Screen Awake
+
+    private func enableScreenAwake(_ enabled: Bool) {
+        DispatchQueue.main.async {
+            UIApplication.shared.isIdleTimerDisabled = enabled
+        }
+    }
+
+    // MARK: - Local Notifications
+
+    func requestNotificationPermission() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound]) { _, _ in }
+    }
+
+    private func scheduleAllNotifications(preset: Preset) {
+        cancelAllNotifications()
+
+        var currentTime: TimeInterval = 0
+
+        // Prepare phase
+        if preset.prepareTime > 0 {
+            // Bell at end of prepare
+            currentTime += TimeInterval(preset.prepareTime)
+            scheduleNotification(at: currentTime, title: "Round 1", body: "Fight!", sound: "bell.m4a")
+        }
+
+        // Round and rest phases
+        for round in 1...preset.numberOfRounds {
+            let roundStart = currentTime
+
+            // 10-second warning during round
+            if preset.roundTime > 10 {
+                scheduleNotification(at: roundStart + TimeInterval(preset.roundTime - 10), title: "10 seconds", body: "Round \(round) ending soon", sound: "clapper.m4a")
+            }
+
+            // Bell at end of round
+            currentTime += TimeInterval(preset.roundTime)
+
+            if round < preset.numberOfRounds {
+                scheduleNotification(at: currentTime, title: "Rest", body: "Round \(round) complete", sound: "bell.m4a")
+
+                // 10-second warning during rest
+                if preset.restTime > 10 {
+                    scheduleNotification(at: currentTime + TimeInterval(preset.restTime - 10), title: "10 seconds", body: "Get ready for round \(round + 1)", sound: "clapper.m4a")
+                }
+
+                // Bell at end of rest
+                currentTime += TimeInterval(preset.restTime)
+                scheduleNotification(at: currentTime, title: "Round \(round + 1)", body: "Fight!", sound: "bell.m4a")
+            } else {
+                // Final round complete
+                scheduleNotification(at: currentTime, title: "Workout Complete", body: "All \(preset.numberOfRounds) rounds finished!", sound: "bell.m4a")
+            }
+        }
+    }
+
+    private func scheduleNotification(at timeInterval: TimeInterval, title: String, body: String, sound: String) {
+        guard timeInterval > 0 else { return }
+
+        let content = UNMutableNotificationContent()
+        content.title = title
+        content.body = body
+        content.sound = UNNotificationSound(named: UNNotificationSoundName(rawValue: sound))
+
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: timeInterval, repeats: false)
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+
+        UNUserNotificationCenter.current().add(request)
+    }
+
+    private func cancelAllNotifications() {
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+    }
+
+    private func rescheduleNotificationsFromCurrentState(preset: Preset) {
+        cancelAllNotifications()
+
+        var currentTime: TimeInterval = TimeInterval(state.timeRemaining)
+
+        // Schedule based on current phase
+        switch state.phase {
+        case .prepare:
+            // Bell at end of prepare
+            scheduleNotification(at: currentTime, title: "Round 1", body: "Fight!", sound: "bell.m4a")
+            currentTime += scheduleRemainingRounds(from: 1, startingAt: currentTime, preset: preset)
+
+        case .round:
+            // 10-second warning if still time
+            if state.timeRemaining > 10 {
+                scheduleNotification(at: currentTime - 10, title: "10 seconds", body: "Round \(state.currentRound) ending soon", sound: "clapper.m4a")
+            }
+            // Bell at end of current round
+            if state.currentRound < preset.numberOfRounds {
+                scheduleNotification(at: currentTime, title: "Rest", body: "Round \(state.currentRound) complete", sound: "bell.m4a")
+                currentTime += scheduleRemainingRounds(from: state.currentRound, startingAt: currentTime, preset: preset, includeCurrentRoundRest: true)
+            } else {
+                scheduleNotification(at: currentTime, title: "Workout Complete", body: "All \(preset.numberOfRounds) rounds finished!", sound: "bell.m4a")
+            }
+
+        case .rest:
+            // 10-second warning if still time
+            if state.timeRemaining > 10 {
+                scheduleNotification(at: currentTime - 10, title: "10 seconds", body: "Get ready for round \(state.currentRound + 1)", sound: "clapper.m4a")
+            }
+            // Bell at end of rest
+            scheduleNotification(at: currentTime, title: "Round \(state.currentRound + 1)", body: "Fight!", sound: "bell.m4a")
+            currentTime += scheduleRemainingRounds(from: state.currentRound + 1, startingAt: currentTime, preset: preset, includeCurrentRoundRest: false)
+
+        default:
+            break
+        }
+    }
+
+    private func scheduleRemainingRounds(from startRound: Int, startingAt baseTime: TimeInterval, preset: Preset, includeCurrentRoundRest: Bool = false) -> TimeInterval {
+        var currentTime = baseTime
+
+        for round in startRound...preset.numberOfRounds {
+            // Add rest time if needed (for rounds after the first one we're scheduling, or if explicitly including)
+            if round > startRound || includeCurrentRoundRest {
+                if preset.restTime > 10 {
+                    scheduleNotification(at: currentTime + TimeInterval(preset.restTime - 10), title: "10 seconds", body: "Get ready for round \(round)", sound: "clapper.m4a")
+                }
+                currentTime += TimeInterval(preset.restTime)
+                if round > startRound {
+                    scheduleNotification(at: currentTime, title: "Round \(round)", body: "Fight!", sound: "bell.m4a")
+                }
+            }
+
+            // Round warning and end
+            if preset.roundTime > 10 {
+                scheduleNotification(at: currentTime + TimeInterval(preset.roundTime - 10), title: "10 seconds", body: "Round \(round) ending soon", sound: "clapper.m4a")
+            }
+            currentTime += TimeInterval(preset.roundTime)
+
+            if round < preset.numberOfRounds {
+                scheduleNotification(at: currentTime, title: "Rest", body: "Round \(round) complete", sound: "bell.m4a")
+            } else {
+                scheduleNotification(at: currentTime, title: "Workout Complete", body: "All \(preset.numberOfRounds) rounds finished!", sound: "bell.m4a")
+            }
+        }
+
+        return currentTime - baseTime
     }
 }

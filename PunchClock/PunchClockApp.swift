@@ -14,6 +14,9 @@ struct PunchClockApp: App {
 
         // End any orphaned Live Activities from previous sessions
         cleanupOrphanedLiveActivities()
+
+        // Request notification permission for background alerts
+        TimerManager.shared.requestNotificationPermission()
     }
 
     private func cleanupOrphanedLiveActivities() {
