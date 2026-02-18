@@ -118,8 +118,8 @@ struct TimerView: View {
 
                     if let cueText = reflexCueManager.currentCueText {
                         Text(cueText.uppercased())
-                            .font(.system(size: 28, weight: .heavy))
-                            .foregroundColor(.orange)
+                            .font(.system(size: 34, weight: .heavy))
+                            .foregroundColor(Color(red: 1.0, green: 0.8, blue: 0.3))
                             .shadow(color: .black.opacity(0.5), radius: 2, x: 0, y: 1)
                             .transition(.scale.combined(with: .opacity))
                             .animation(.spring(response: 0.3, dampingFraction: 0.6), value: cueText)

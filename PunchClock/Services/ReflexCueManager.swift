@@ -17,6 +17,13 @@ final class ReflexCueManager: ObservableObject {
         intensity = preset.reflexIntensity
         enabledCategories = preset.reflexCategories
         secondsUntilNextCue = randomInterval()
+        prewarmSynthesizer()
+    }
+
+    private func prewarmSynthesizer() {
+        let utterance = AVSpeechUtterance(string: "")
+        utterance.volume = 0
+        synthesizer.speak(utterance)
     }
 
     func toggle() {
