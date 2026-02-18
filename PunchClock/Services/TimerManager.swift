@@ -26,6 +26,7 @@ final class TimerManager: ObservableObject {
     private let hapticHeavy = UIImpactFeedbackGenerator(style: .heavy)
     private let hapticMedium = UIImpactFeedbackGenerator(style: .medium)
     private let hapticLight = UIImpactFeedbackGenerator(style: .light)
+    let reflexCueManager = ReflexCueManager()
 
     var currentPreset: Preset? { preset }
 
@@ -80,6 +81,7 @@ final class TimerManager: ObservableObject {
         soundManager.startBackgroundAudio()
         enableScreenAwake(true)
         startTimer()
+        reflexCueManager.configure(with: preset)
         startLiveActivity(preset: preset)
         scheduleAllNotifications(preset: preset)
     }
@@ -108,6 +110,7 @@ final class TimerManager: ObservableObject {
         timer = nil
         phaseEndTime = nil
         state = TimerState()
+        reflexCueManager.stop()
         soundManager.stopBackgroundAudio()
         enableScreenAwake(false)
         cancelAllNotifications()
@@ -250,6 +253,10 @@ final class TimerManager: ObservableObject {
 
         handleSoundCues()
 
+        if state.phase == .round {
+            reflexCueManager.tick(isMuted: isMuted)
+        }
+
         if state.timeRemaining > 0 {
             state.timeRemaining -= 1
         } else {
@@ -309,6 +316,8 @@ final class TimerManager: ObservableObject {
             updateLiveActivity()
 
         case .round:
+            reflexCueManager.pauseSpeech()
+
             if !isMuted {
                 soundManager.playBell()
                 hapticHeavy.impactOccurred()

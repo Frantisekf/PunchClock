@@ -4,7 +4,12 @@
       "Bash(rm:*)",
       "Bash(xcrun simctl io:*)",
       "Bash(open:*)",
-      "Bash(xcrun simctl install:*)"
+      "Bash(xcrun simctl install:*)",
+      "Bash(for f in ~/Desktop/IMG_033*.PNG ~/Desktop/IMG_0340.PNG)",
+      "Bash(do echo $f:)",
+      "Bash(sips:*)",
+      "Bash(done)",
+      "Bash(xcodebuild:*)"
     ],
     "deny": [],
     "ask": []

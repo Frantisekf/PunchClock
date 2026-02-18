@@ -1,5 +1,17 @@
 import Foundation
 
+enum WatchReflexIntensity: String, Codable, CaseIterable {
+    case low
+    case medium
+    case high
+}
+
+enum WatchReflexCueCategory: String, Codable, CaseIterable, Hashable {
+    case defensive
+    case movement
+    case offensive
+}
+
 struct WatchPreset: Identifiable, Codable, Equatable {
     var id: UUID
     var name: String
@@ -7,6 +19,9 @@ struct WatchPreset: Identifiable, Codable, Equatable {
     var roundTime: Int
     var restTime: Int
     var numberOfRounds: Int
+    var reflexEnabled: Bool = false
+    var reflexIntensity: WatchReflexIntensity = .medium
+    var reflexCategories: Set<WatchReflexCueCategory> = Set(WatchReflexCueCategory.allCases)
 
     init(
         id: UUID = UUID(),
@@ -14,7 +29,10 @@ struct WatchPreset: Identifiable, Codable, Equatable {
         prepareTime: Int,
         roundTime: Int,
         restTime: Int,
-        numberOfRounds: Int
+        numberOfRounds: Int,
+        reflexEnabled: Bool = false,
+        reflexIntensity: WatchReflexIntensity = .medium,
+        reflexCategories: Set<WatchReflexCueCategory> = Set(WatchReflexCueCategory.allCases)
     ) {
         self.id = id
         self.name = name
@@ -22,6 +40,22 @@ struct WatchPreset: Identifiable, Codable, Equatable {
         self.roundTime = roundTime
         self.restTime = restTime
         self.numberOfRounds = numberOfRounds
+        self.reflexEnabled = reflexEnabled
+        self.reflexIntensity = reflexIntensity
+        self.reflexCategories = reflexCategories
+    }
+
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(UUID.self, forKey: .id)
+        name = try container.decode(String.self, forKey: .name)
+        prepareTime = try container.decode(Int.self, forKey: .prepareTime)
+        roundTime = try container.decode(Int.self, forKey: .roundTime)
+        restTime = try container.decode(Int.self, forKey: .restTime)
+        numberOfRounds = try container.decode(Int.self, forKey: .numberOfRounds)
+        reflexEnabled = try container.decodeIfPresent(Bool.self, forKey: .reflexEnabled) ?? false
+        reflexIntensity = try container.decodeIfPresent(WatchReflexIntensity.self, forKey: .reflexIntensity) ?? .medium
+        reflexCategories = try container.decodeIfPresent(Set<WatchReflexCueCategory>.self, forKey: .reflexCategories) ?? Set(WatchReflexCueCategory.allCases)
     }
 
     static let boxingStandard = WatchPreset(

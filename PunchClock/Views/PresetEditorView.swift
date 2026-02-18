@@ -14,6 +14,9 @@ struct PresetEditorView: View {
     @State private var restMinutes: Int = 1
     @State private var restSeconds: Int = 0
     @State private var numberOfRounds: Int = 12
+    @State private var reflexEnabled: Bool = false
+    @State private var reflexIntensity: ReflexIntensity = .medium
+    @State private var reflexCategories: Set<ReflexCueCategory> = Set(ReflexCueCategory.allCases)
 
     private var isEditing: Bool { preset != nil }
 
@@ -124,6 +127,34 @@ struct PresetEditorView: View {
                     Label("Prepare", systemImage: "clock")
                         .foregroundColor(.yellow)
                 }
+
+                Section {
+                    Toggle("Reflex Training", isOn: $reflexEnabled)
+
+                    if reflexEnabled {
+                        Picker("Intensity", selection: $reflexIntensity) {
+                            ForEach(ReflexIntensity.allCases, id: \.self) { intensity in
+                                Text(intensity.displayName).tag(intensity)
+                            }
+                        }
+
+                        ForEach(ReflexCueCategory.allCases, id: \.self) { category in
+                            Toggle(category.displayName, isOn: Binding(
+                                get: { reflexCategories.contains(category) },
+                                set: { enabled in
+                                    if enabled {
+                                        reflexCategories.insert(category)
+                                    } else if reflexCategories.count > 1 {
+                                        reflexCategories.remove(category)
+                                    }
+                                }
+                            ))
+                        }
+                    }
+                } header: {
+                    Label("Reflex Training", systemImage: "bolt.fill")
+                        .foregroundColor(.orange)
+                }
             }
 
             Button {
@@ -162,6 +193,9 @@ struct PresetEditorView: View {
                     restMinutes = preset.restTime / 60
                     restSeconds = preset.restTime % 60
                     numberOfRounds = preset.numberOfRounds
+                    reflexEnabled = preset.reflexEnabled
+                    reflexIntensity = preset.reflexIntensity
+                    reflexCategories = preset.reflexCategories
                 }
             }
         }
@@ -174,7 +208,10 @@ struct PresetEditorView: View {
             prepareTime: max(prepareTime, 5),
             roundTime: max(roundTime, 10),
             restTime: max(restTime, 5),
-            numberOfRounds: numberOfRounds
+            numberOfRounds: numberOfRounds,
+            reflexEnabled: reflexEnabled,
+            reflexIntensity: reflexIntensity,
+            reflexCategories: reflexCategories
         )
 
         onSave(newPreset)

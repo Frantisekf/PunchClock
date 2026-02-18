@@ -18,7 +18,7 @@ struct ContentView: View {
                     presetListView
                         .transition(.opacity)
                 } else {
-                    TimerView(timerManager: timerManager, historyStore: historyStore)
+                    TimerView(timerManager: timerManager, reflexCueManager: timerManager.reflexCueManager, historyStore: historyStore)
                         .transition(.opacity)
                 }
             }

@@ -12,6 +12,9 @@ struct PresetSetupView: View {
     @State private var restSeconds: Int
     @State private var prepareMinutes: Int
     @State private var prepareSeconds: Int
+    @State private var reflexEnabled: Bool
+    @State private var reflexIntensity: ReflexIntensity
+    @State private var reflexCategories: Set<ReflexCueCategory>
 
     init(preset: Preset, onStart: @escaping (Preset) -> Void, onCancel: @escaping () -> Void) {
         self.preset = preset
@@ -25,6 +28,9 @@ struct PresetSetupView: View {
         _restSeconds = State(initialValue: preset.restTime % 60)
         _prepareMinutes = State(initialValue: preset.prepareTime / 60)
         _prepareSeconds = State(initialValue: preset.prepareTime % 60)
+        _reflexEnabled = State(initialValue: preset.reflexEnabled)
+        _reflexIntensity = State(initialValue: preset.reflexIntensity)
+        _reflexCategories = State(initialValue: preset.reflexCategories)
     }
 
     private var prepareTime: Int { prepareMinutes * 60 + prepareSeconds }
@@ -108,6 +114,34 @@ struct PresetSetupView: View {
                         Label("Prepare", systemImage: "clock")
                             .foregroundColor(.yellow)
                     }
+
+                    Section {
+                        Toggle("Reflex Training", isOn: $reflexEnabled)
+
+                        if reflexEnabled {
+                            Picker("Intensity", selection: $reflexIntensity) {
+                                ForEach(ReflexIntensity.allCases, id: \.self) { intensity in
+                                    Text(intensity.displayName).tag(intensity)
+                                }
+                            }
+
+                            ForEach(ReflexCueCategory.allCases, id: \.self) { category in
+                                Toggle(category.displayName, isOn: Binding(
+                                    get: { reflexCategories.contains(category) },
+                                    set: { enabled in
+                                        if enabled {
+                                            reflexCategories.insert(category)
+                                        } else if reflexCategories.count > 1 {
+                                            reflexCategories.remove(category)
+                                        }
+                                    }
+                                ))
+                            }
+                        }
+                    } header: {
+                        Label("Reflex Training", systemImage: "bolt.fill")
+                            .foregroundColor(.orange)
+                    }
                 }
 
                 Button {
@@ -118,7 +152,10 @@ struct PresetSetupView: View {
                         prepareTime: prepareTime,
                         roundTime: roundMinutes * 60 + roundSeconds,
                         restTime: restMinutes * 60 + restSeconds,
-                        numberOfRounds: rounds
+                        numberOfRounds: rounds,
+                        reflexEnabled: reflexEnabled,
+                        reflexIntensity: reflexIntensity,
+                        reflexCategories: reflexCategories
                     )
                     onStart(adjustedPreset)
                 } label: {

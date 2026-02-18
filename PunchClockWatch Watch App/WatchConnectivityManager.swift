@@ -30,13 +30,26 @@ final class WatchConnectivityManager: NSObject, ObservableObject {
                 return nil
             }
 
+            let reflexEnabled = dict["reflexEnabled"] as? Bool ?? false
+            let reflexIntensity = (dict["reflexIntensity"] as? String).flatMap { WatchReflexIntensity(rawValue: $0) } ?? .medium
+            let reflexCategories: Set<WatchReflexCueCategory> = {
+                guard let rawCategories = dict["reflexCategories"] as? [String] else {
+                    return Set(WatchReflexCueCategory.allCases)
+                }
+                let parsed = Set(rawCategories.compactMap { WatchReflexCueCategory(rawValue: $0) })
+                return parsed.isEmpty ? Set(WatchReflexCueCategory.allCases) : parsed
+            }()
+
             return WatchPreset(
                 id: id,
                 name: name,
                 prepareTime: prepareTime,
                 roundTime: roundTime,
                 restTime: restTime,
-                numberOfRounds: numberOfRounds
+                numberOfRounds: numberOfRounds,
+                reflexEnabled: reflexEnabled,
+                reflexIntensity: reflexIntensity,
+                reflexCategories: reflexCategories
             )
         }
 

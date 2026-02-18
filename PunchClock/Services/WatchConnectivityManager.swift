@@ -28,7 +28,10 @@ final class WatchConnectivityManager: NSObject, ObservableObject {
                 "prepareTime": preset.prepareTime,
                 "roundTime": preset.roundTime,
                 "restTime": preset.restTime,
-                "numberOfRounds": preset.numberOfRounds
+                "numberOfRounds": preset.numberOfRounds,
+                "reflexEnabled": preset.reflexEnabled,
+                "reflexIntensity": preset.reflexIntensity.rawValue,
+                "reflexCategories": preset.reflexCategories.map { $0.rawValue }
             ]
         }
 

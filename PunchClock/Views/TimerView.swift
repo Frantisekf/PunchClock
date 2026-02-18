@@ -2,6 +2,7 @@ import SwiftUI
 
 struct TimerView: View {
     @ObservedObject var timerManager: TimerManager
+    @ObservedObject var reflexCueManager: ReflexCueManager
     var historyStore: WorkoutHistoryStore
     @Environment(\.colorScheme) var colorScheme
     @State private var workoutSaved = false
@@ -84,6 +85,17 @@ struct TimerView: View {
                 VStack(spacing: 20) {
                     HStack {
                         Spacer()
+                        if timerManager.currentPreset?.reflexEnabled == true {
+                            Button {
+                                reflexCueManager.toggle()
+                            } label: {
+                                Image(systemName: reflexCueManager.isEnabled ? "bolt.fill" : "bolt.slash.fill")
+                                    .font(.system(size: 22))
+                                    .foregroundColor(.white.opacity(0.8))
+                                    .frame(width: 44, height: 44)
+                            }
+                            .accessibilityLabel(reflexCueManager.isEnabled ? "Disable reflex cues" : "Enable reflex cues")
+                        }
                         Button {
                             timerManager.isMuted.toggle()
                         } label: {
@@ -103,6 +115,15 @@ struct TimerView: View {
                     Text(timerManager.state.phaseDisplayName)
                         .font(.system(size: 32, weight: .bold))
                         .foregroundColor(.white.opacity(0.9))
+
+                    if let cueText = reflexCueManager.currentCueText {
+                        Text(cueText.uppercased())
+                            .font(.system(size: 28, weight: .heavy))
+                            .foregroundColor(.orange)
+                            .shadow(color: .black.opacity(0.5), radius: 2, x: 0, y: 1)
+                            .transition(.scale.combined(with: .opacity))
+                            .animation(.spring(response: 0.3, dampingFraction: 0.6), value: cueText)
+                    }
 
                     Text(timerManager.state.formattedTime)
                         .font(.system(size: 120, weight: .bold, design: .monospaced))
@@ -322,5 +343,5 @@ extension TimerView {
 
 #Preview {
     TimerManager.shared.start(with: .boxingStandard)
-    return TimerView(timerManager: TimerManager.shared, historyStore: WorkoutHistoryStore())
+    return TimerView(timerManager: TimerManager.shared, reflexCueManager: TimerManager.shared.reflexCueManager, historyStore: WorkoutHistoryStore())
 }
